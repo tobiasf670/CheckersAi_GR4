@@ -15,4 +15,13 @@ public class BoardField {
 
     }
 
+    public BoardField(Player owner, CheckerType checkerType, boolean isOccupied) {
+        this.owner = owner;
+        this.checkerType = checkerType;
+        this.isOccupied = isOccupied;
+    }
+
+    public BoardField(boolean isOccupied) {
+        this.isOccupied = isOccupied;
+    }
 }

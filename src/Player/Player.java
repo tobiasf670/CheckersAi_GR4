@@ -1,12 +1,11 @@
 package Player;
 
+import enums.Side;
+
 public class Player {
 
-    public enum Side {
-        RED, BLACK
-    }
 
-    Side side;
+    public Side side;
 
     public Player(Side side) {
         this.side = side;
