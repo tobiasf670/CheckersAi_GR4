@@ -26,7 +26,7 @@ public class testHeuristicCalculator {
         black = new Player(Side.BLACK);
 
         board = new Board(red, black);
-
+        board.init();
 
 
     }

@@ -3,8 +3,9 @@ package Board;
 import Interfaces.IBoardLogic;
 import Player.Player;
 import enums.CheckerType;
-import Board.Move;
-import java.util.List;
+import Moves.Move;
+import enums.Side;
+
 import java.util.List;
 
 /**
@@ -21,6 +22,7 @@ public class BoardLogic implements IBoardLogic {
     public List<Move> validmoves(CheckerType t) {
         return null;
     }
+
 
     @Override
     public List<Move> getJumpMoves(Board b, Player p) {

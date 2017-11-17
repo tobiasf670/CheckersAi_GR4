@@ -27,11 +27,17 @@ public class Board implements IBoard {
 
         this.black = black;
         this.red = red;
-        init();
+
 
     }
+    //for testing
+    public Board(Player red, Player black, BoardField[][] gameBoard) {
+        this.black = black;
+        this.red = red;
+        this.gameBoard = gameBoard;
+    }
 
-    private void init() {
+    public void init() {
         //Empty
         BoardField empty = new BoardField(false);
         //Black occupied
@@ -69,6 +75,10 @@ public class Board implements IBoard {
 
     }
 
+    public BoardField getBoardField(Point point) {
+        return gameBoard[point.x][point.y];
+    }
+
     @Override
     public boolean removeChecker(Point point) {
         BoardField field = gameBoard[point.x][point.y];
@@ -92,5 +102,30 @@ public class Board implements IBoard {
         field.checkerType = CheckerType.EMPTY;
 
         return true;
+    }
+
+    public void initTestBoarda() {
+        //Empty
+        BoardField empty = new BoardField(false);
+        BoardField red = new BoardField(this.red, CheckerType.RED, true);
+        BoardField redKing = new BoardField(this.red, CheckerType.RED_KING, true);
+
+        this.gameBoard = new BoardField[][]{
+                { empty, empty, empty, empty, empty, empty, empty, empty},
+                { empty, empty, redKing, empty, empty, empty, empty, empty},
+                { empty, empty, empty, empty, empty, empty, empty, empty},
+                { empty, empty, empty, empty, empty, empty, empty, empty},
+                { empty, empty, empty, empty, empty, empty, empty, empty},
+                { empty, empty, empty, empty, empty, empty, empty, empty},
+                { empty, empty, empty, empty, empty, empty, empty, empty},
+                { red, empty, empty, empty, red, empty, red, empty},
+
+        };
+
+
+        this.numberOfBlackCheckers = 12;
+        this.numberOfBlackKings = 0;
+        this.numberOfRedCheckers = 12;
+        this.numberOfRedKings = 0;
     }
 }
