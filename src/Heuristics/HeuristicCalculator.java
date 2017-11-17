@@ -14,11 +14,12 @@ public class HeuristicCalculator implements IHeuristicCalculator{
     @Override
     public double CalculateHeuristic(Board board, Player player) {
 
+        double valueForRed = board.numberOfRedCheckers+(board.numberOfRedKings*kingFactor);
+        double valueForBlack = board.numberOfBlackCheckers + (board.numberOfBlackKings*kingFactor);
+
         if(player.side == Side.BLACK) {
-            return(board.numberOfBlackCheckers + (board.numberOfBlackKings*kingFactor)
-            -(board.numberOfRedCheckers+(board.numberOfRedKings*kingFactor)));
+            return(valueForBlack-valueForRed);
         }
-        return(board.numberOfRedCheckers + (board.numberOfRedKings*kingFactor)
-                -(board.numberOfBlackCheckers+(board.numberOfBlackKings*kingFactor)));
+        return(valueForRed-valueForBlack);
     }
 }

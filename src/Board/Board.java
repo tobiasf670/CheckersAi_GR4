@@ -2,6 +2,9 @@ package Board;
 import Player.Player;
 import Interfaces.IBoard;
 import enums.CheckerType;
+import enums.Side;
+
+import java.awt.*;
 
 
 public class Board implements IBoard {
@@ -9,8 +12,8 @@ public class Board implements IBoard {
     public static final int boardYsize = 8;
     public static final int boardXsize = 8;
 
-    private Player one;
-    private Player two;
+    private Player red;
+    private Player black;
 
 
     public int numberOfBlackCheckers;
@@ -20,10 +23,11 @@ public class Board implements IBoard {
 
     private BoardField[][] gameBoard;
 
-    public Board(Player one, Player two) {
+    public Board(Player red, Player black) {
 
-        this.one = one;
-        this.two = two;
+        this.black = black;
+        this.red = red;
+        init();
 
     }
 
@@ -31,8 +35,9 @@ public class Board implements IBoard {
         //Empty
         BoardField empty = new BoardField(false);
         //Black occupied
-        BoardField black = new BoardField(two, CheckerType.BLACK, true);
-        BoardField red = new BoardField(one, CheckerType.RED, true);
+
+        BoardField black = new BoardField(this.black, CheckerType.BLACK, true);
+        BoardField red = new BoardField(this.red, CheckerType.RED, true);
 
         this.gameBoard = new BoardField[][]{
                 { empty, black, empty, black, empty, black, empty, black},
@@ -47,10 +52,10 @@ public class Board implements IBoard {
         };
 
 
-        this.numberOfRedKings = 0;
+        this.numberOfBlackCheckers = 12;
         this.numberOfBlackKings = 0;
         this.numberOfRedCheckers = 12;
-        this.numberOfRedKings = 12;
+        this.numberOfRedKings = 0;
     }
 
 
@@ -62,5 +67,30 @@ public class Board implements IBoard {
     @Override
     public void print() {
 
+    }
+
+    @Override
+    public boolean removeChecker(Point point) {
+        BoardField field = gameBoard[point.x][point.y];
+        if(!field.isOccupied) {
+            return false;
+        }
+        field.isOccupied = false;
+        if(field.owner.side == Side.BLACK) {
+            if(field.checkerType == CheckerType.BLACK_KING) {
+                numberOfBlackKings--;
+            } else {
+                numberOfBlackCheckers--;
+            }
+        } else {
+            if(field.checkerType == CheckerType.RED_KING) {
+                numberOfRedKings--;
+            } else {
+                numberOfRedCheckers--;
+            }
+        }
+        field.checkerType = CheckerType.EMPTY;
+
+        return true;
     }
 }
