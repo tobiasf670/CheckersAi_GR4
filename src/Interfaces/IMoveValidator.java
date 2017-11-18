@@ -8,7 +8,7 @@ import Moves.Move;
  */
 public interface IMoveValidator {
 
-    boolean isValidMove(Player player, BoardField boardField, Move move);
+    boolean isValidMove(Player player, BoardField boardField, Move move, boolean isJumpMove);
 
     boolean isMovingOwnChecker(Player player, BoardField boardField);
 

@@ -59,9 +59,9 @@ public class testMoveValidator {
         Move move = new Move(new Point(7,0),new Point(6,1));
         Move move1 = new Move(new Point(7,0), new Point(5,2));
 
-        boolean isValidMove = validator.isValidMove(red, checker, move);
+        boolean isValidMove = validator.isValidMove(red, checker, move, false);
 
-        boolean isNotValidMove = validator.isValidMove(red, checker,move1);
+        boolean isNotValidMove = validator.isValidMove(red, checker,move1, false);
 
         Assert.assertTrue(isValidMove);
         Assert.assertFalse(isNotValidMove);
@@ -79,11 +79,11 @@ public class testMoveValidator {
         Move move1 = new Move(new Point(1,2), new Point(2,3));
         Move move2 = new Move(new Point(1,2), new Point(6,6));
 
-        boolean isValidMove = validator.isValidMove(red, king, move);
+        boolean isValidMove = validator.isValidMove(red, king, move, false);
 
-        boolean isAlsoValidMove = validator.isValidMove(red, king,move1);
+        boolean isAlsoValidMove = validator.isValidMove(red, king,move1, false);
 
-        boolean isInvalidMove = validator.isValidMove(red, king, move2);
+        boolean isInvalidMove = validator.isValidMove(red, king, move2, false);
 
         Assert.assertTrue(isValidMove);
         Assert.assertTrue(isAlsoValidMove);

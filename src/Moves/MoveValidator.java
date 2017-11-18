@@ -11,14 +11,21 @@ import enums.Side;
  */
 public class MoveValidator implements IMoveValidator {
     @Override
-    public boolean isValidMove(Player player, BoardField boardField, Move move) {
-        if(!isMovingOwnChecker(player,boardField) || !isMovingHorizontal(move) || !isMovingVertical(move)) {
+    public boolean isValidMove(Player player, BoardField boardField, Move move, boolean isJumpMove) {
+
+        //if moving beyond the border of the board
+        if(move.getGoaly() > 7 || move.getGoaly()< 0 || move.getGoalx() >7 || move.getGoalx() < 0) {
+            return false;
+        }
+
+        if(!isMovingOwnChecker(player,boardField) || !isMovingHorizontal(move, isJumpMove)
+                || !isMovingVertical(move, isJumpMove)) {
             return false;
         }
         if(boardField.checkerType == CheckerType.RED || boardField.checkerType == CheckerType.BLACK) {
 
             //Check if the checker is moving in the right vertical direction
-            if(!isMovingCheckerRightDirection(player.side, move)) {
+            if(!isMovingCheckerRightDirection(player.side, move, isJumpMove)) {
                 return false;
             }
 
@@ -31,30 +38,40 @@ public class MoveValidator implements IMoveValidator {
 
     }
 
-    private boolean isMovingHorizontal(Move move) {
+    private int jumpFactor(boolean isJumpMove) {
+        if(isJumpMove)
+            return 2;
+
+        return 1;
+    }
+
+    private boolean isMovingHorizontal(Move move, boolean isJumpMove) {
+        int jumpFactor = jumpFactor(isJumpMove);
         int horizontalMovement = move.getStartx()-move.getGoalx();
-        if(horizontalMovement == 1 || horizontalMovement == -1) {
+        if(horizontalMovement == jumpFactor || horizontalMovement == -jumpFactor) {
             return true;
         }
         return false;
     }
 
-    private boolean isMovingVertical(Move move) {
-         int verticalMovement = move.getStarty() - move.getGoaly();
-        if(verticalMovement == 1 || verticalMovement == -1) {
+    private boolean isMovingVertical(Move move, boolean isJumpMove) {
+        int jumpFactor = jumpFactor(isJumpMove);
+        int verticalMovement = move.getStarty() - move.getGoaly();
+        if(verticalMovement == jumpFactor || verticalMovement == -jumpFactor) {
             return true;
         }
         return false;
     }
 
-    private boolean isMovingCheckerRightDirection(Side side, Move move) {
+    private boolean isMovingCheckerRightDirection(Side side, Move move, boolean isJumpMove) {
+        int jumpFactor = jumpFactor(isJumpMove);
         //Black checkers can only move down
         int verticalMovement = move.getStarty() - move.getGoaly();
-        if (side == Side.BLACK && verticalMovement != 1) {
+        if (side == Side.BLACK && verticalMovement != jumpFactor) {
             return false;
         }
         //Red checkers can only move up
-        if(side == Side.RED && verticalMovement != -1) {
+        if(side == Side.RED && verticalMovement != -jumpFactor) {
             return false;
         }
 

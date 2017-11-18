@@ -5,6 +5,8 @@ import enums.CheckerType;
 import enums.Side;
 
 import java.awt.*;
+import java.util.*;
+import java.util.List;
 
 
 public class Board implements IBoard {
@@ -102,6 +104,19 @@ public class Board implements IBoard {
         field.checkerType = CheckerType.EMPTY;
 
         return true;
+    }
+
+    @Override
+    public List<BoardField> getBoardFields(Player player) {
+        List<BoardField> boardFields = new ArrayList<BoardField>();
+        for(BoardField boardField[] : gameBoard) {
+            for(int i = 0; i<8; i++) {
+                if(boardField[i].owner.side==player.side) {
+                    boardFields.add(boardField[i]);
+                }
+            }
+        }
+        return boardFields;
     }
 
     public void initTestBoarda() {
