@@ -14,4 +14,5 @@ public interface IBoard {
     void print();
     boolean removeChecker(Point point);
     List<BoardField> getBoardFields(Player player);
+    public BoardField getBoardField(Point point);
 }

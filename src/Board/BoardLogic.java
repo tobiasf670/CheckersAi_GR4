@@ -1,5 +1,6 @@
 package Board;
 
+import Interfaces.IBoard;
 import Interfaces.IBoardLogic;
 import Moves.MoveValidator;
 import Player.Player;
@@ -21,7 +22,7 @@ public class BoardLogic implements IBoardLogic {
     }
 
     @Override
-    public List<Move> getAllvalideMoves(Player p, Board board) {
+    public List<Move> getAllvalideMoves(Player p, IBoard board) {
         List<Move> moves = new ArrayList<>();
 
         for(BoardField boardField : board.getBoardFields(p)) {
@@ -31,7 +32,7 @@ public class BoardLogic implements IBoardLogic {
     }
 
     @Override
-    public List<Move> validmoves(BoardField boardField, Board board, Player player) {
+    public List<Move> validmoves(BoardField boardField, IBoard board, Player player) {
         Point startPosition = boardField.boardPosition;
         //Right up
         Move move = new Move(startPosition, new Point(startPosition.x+1, startPosition.y+1));
@@ -65,14 +66,14 @@ public class BoardLogic implements IBoardLogic {
         return validMoves;
     }
 
-    private boolean isFieldTaken(Board board, Move move) {
+    private boolean isFieldTaken(IBoard board, Move move) {
         if(board.getBoardField(new Point(move.getGoalx(),move.getGoaly())).isOccupied)
             return false;
 
         return true;
     }
 
-    private List<Move> getJumpMoves(BoardField boardField, Board board) {
+    private List<Move> getJumpMoves(BoardField boardField, IBoard board) {
         List<Move> jumpMoves = new ArrayList<>();
         Point startPosition = boardField.boardPosition;
         //Right up

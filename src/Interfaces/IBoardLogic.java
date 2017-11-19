@@ -11,7 +11,7 @@ import java.util.List;
 public interface IBoardLogic {
 
     List<Move> getAllvalideMoves(Player p, IBoard board);
-    List<Move> validmoves(BoardField boardField, Board board, Player player);
+    List<Move> validmoves(BoardField boardField, IBoard board, Player player);
 
     boolean makeMove(Board board,Move m);
     List<Move> getJumpMoves(Board b, Player p);
