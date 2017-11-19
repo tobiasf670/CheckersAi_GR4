@@ -68,8 +68,8 @@ public class Board implements IBoard {
 
 
     @Override
-    public CheckerType[][] clone() {
-        return new CheckerType[0][];
+    public Board clone() {
+        return null;
     }
 
     @Override

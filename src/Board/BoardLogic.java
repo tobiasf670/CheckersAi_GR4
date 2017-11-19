@@ -141,7 +141,7 @@ public class BoardLogic implements IBoardLogic {
     }
 
     @Override
-    public Boolean makeMove(Move m) {
-        return null;
+    public boolean makeMove(Board board, Move m) {
+        return true;
     }
 }
