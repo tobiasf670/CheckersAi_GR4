@@ -162,8 +162,9 @@ public class Board implements IBoard {
     @Override
     public void print() {
         for(int i = 0; i< gameBoard.length;i++){
+            System.out.println("");
             for(int j = 0; j< gameBoard.length;j++){
-                System.out.println("i: "+i+" j: "+j+"  "+gameBoard[i][j].checkerType);
+                System.out.print(" "+gameBoard[i][j].checkerType);
 
 
             }
@@ -180,6 +181,12 @@ public class Board implements IBoard {
         }
 
         //throw(new IndexOutOfBoundsException(point +"out of bounds"));
+    }
+
+    @Override
+    public void setBoardField(int row, int col, CheckerType type) {
+
+        gameBoard[row][col].checkerType = type ;
     }
 
     @Override

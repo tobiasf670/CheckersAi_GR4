@@ -17,6 +17,7 @@ import java.util.List;
  */
 public class BoardLogic implements IBoardLogic {
     MoveValidator moveValidator;
+    List<Player> Players = new ArrayList<Player>();
     public BoardLogic() {
         this.moveValidator = new MoveValidator();
     }
@@ -177,7 +178,46 @@ public class BoardLogic implements IBoardLogic {
     }
 
     @Override
-    public boolean makeMove(Board board, Move m) {
+    public void createPlayer( Side s) {
+        Player p = new Player(s);
+
+        Players.add(p);
+
+    }
+
+    @Override
+    public List<Player> getPlayers() {
+        return Players;
+    }
+
+    @Override
+    public boolean makeMove(Board board, Move m, Side s) {
+
+        if(m == null){
+            return false;
+        }
+
+        int sx = m.getStartx();
+        int sy = m.getStarty();
+        int gx = m.getGoalx();
+        int gy = m.getGoaly();
+        Point start = new Point(sx,sy);
+        Point goal = new Point(gx,gy);
+
+        CheckerType type ;
+        if(s == Side.BLACK){
+            type = CheckerType.BLACK;
+        }
+        else{
+            type = CheckerType.RED;
+        }
+
+
+        board.setBoardField(sx,sy,CheckerType.EMPTY);
+        board.setBoardField(gx,gy,type);
+
+
+
         return true;
     }
 }

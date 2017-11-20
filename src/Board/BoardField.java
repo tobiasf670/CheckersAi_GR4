@@ -34,6 +34,7 @@ public class BoardField {
     public BoardField(boolean isOccupied) {
         this.isOccupied = isOccupied;
         this.boardPosition = boardPosition;
+        this.checkerType = CheckerType.EMPTY;
     }
 
     @Override

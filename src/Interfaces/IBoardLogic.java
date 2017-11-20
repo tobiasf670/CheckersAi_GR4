@@ -13,8 +13,11 @@ public interface IBoardLogic {
     List<Move> getAllvalideMoves(Player p, IBoard board);
     List<Move> validmoves(BoardField boardField, IBoard board, Player player);
 
-    boolean makeMove(Board board,Move m);
+    boolean makeMove(Board board,Move m,Side s);
     List<Move> getJumpMoves(Board b, Player p);
     List<BoardField> getAllCheckers(Player p, Board board);
+    void createPlayer(Side s);
+
+    List<Player> getPlayers();
 }
 ///

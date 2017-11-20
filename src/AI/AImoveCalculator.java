@@ -3,6 +3,7 @@ import Board.Board;
 import Interfaces.*;
 import Player.Player;
 import Moves.Move;
+import enums.Side;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,9 +36,9 @@ public class AImoveCalculator implements IAi {
 
         for(Move move : allValidMoves) {
             Board clone = b.clone();
-            boardLogic.makeMove(clone,move);
+            boardLogic.makeMove(clone,move,player.side);
             //for each possible AI move, calculate the heuristic with minimax
-            heuristicScores.add(minimax(clone, player,1, true, 0.0,0.0));
+            heuristicScores.add(minimax(clone, player,4, true, 0.0,0.0));
         }
 
         double bestScore = Collections.max(heuristicScores);
@@ -45,16 +46,70 @@ public class AImoveCalculator implements IAi {
         return allValidMoves.get(heuristicScores.indexOf(bestScore));
     }
 
-    private double minimax(Board board, Player player, int searchDepth,
+    public double minimax(Board board, Player player, int searchDepth,
                            boolean maximizingPlayer, double alpha, double beta) {
 
         //Base case : Recursion ends here
-        if(searchDepth > maxSearchDepth) {
+        if(searchDepth == 0) {
 
             //return the heuristic score
             return heuristicCalculator.CalculateHeuristic(board, player);
         }
 
-        return 0.0;
+
+        Board boards = null;
+
+
+
+           List<Move> moveICanMake = boardLogic.getAllvalideMoves(player,board) ;
+            System.out.println();
+           board.print();
+
+        double v = 0;
+
+        if(maximizingPlayer){
+            v = Double.NEGATIVE_INFINITY;
+            for(int i = 0;i< moveICanMake.size();i++) {
+               
+                boards = board.clone();
+                boardLogic.makeMove(boards,moveICanMake.get(i),player.side);
+
+                double res = minimax(boards,changePlayer(player),searchDepth -1,!maximizingPlayer,alpha,beta);
+
+                v = Math.max(res,v);
+                alpha = Math.max(alpha,v);
+
+                if(alpha >= beta){
+                   break;
+                }
+
+            }
+        }
+          else
+        {
+            v = Double.POSITIVE_INFINITY;
+
+            for(int i = 0;i<moveICanMake.size();i++){
+                boards = board.clone();
+                boardLogic.makeMove(boards,moveICanMake.get(i),player.side);
+                double res = minimax(boards,changePlayer(player),searchDepth-1,!maximizingPlayer,alpha,beta);
+
+                v = Math.min(res,v);
+                alpha = Math.min(alpha,v);
+
+                if(alpha>=beta){
+                    break;
+                }
+            }
+        }
+
+        return v;
+    }
+
+    public Player changePlayer(Player p){
+        if(boardLogic.getPlayers().get(0).side == p.side)   {
+                    return boardLogic.getPlayers().get(1) ;
+        }
+        return boardLogic.getPlayers().get(0);
     }
 }
