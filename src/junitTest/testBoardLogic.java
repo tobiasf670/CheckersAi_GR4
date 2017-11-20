@@ -36,6 +36,7 @@ public class testBoardLogic {
 
         List<Move> moves =  boardLogic.getAllvalideMoves(red, (IBoard)board);
 
+
         List<Move> movesBlack =  boardLogic.getAllvalideMoves(black, (IBoard)board);
 
         int test = 10;

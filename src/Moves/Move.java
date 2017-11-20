@@ -45,4 +45,9 @@ public class Move {
     public void setGoalx(int goalx) {
         this.goalx = goalx;
     }
+
+    @Override
+    public String toString() {
+    return "start: "+startx+", "+starty+" End: "+goalx+" , "+goaly;
+    }
 }

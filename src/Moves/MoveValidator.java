@@ -66,12 +66,12 @@ public class MoveValidator implements IMoveValidator {
     private boolean isMovingCheckerRightDirection(Side side, Move move, boolean isJumpMove) {
         int jumpFactor = jumpFactor(isJumpMove);
         //Black checkers can only move down
-        int verticalMovement = move.getStarty() - move.getGoaly();
-        if (side == Side.BLACK && verticalMovement != jumpFactor) {
+        int verticalMovement = move.getStartx() - move.getGoalx();
+        if (side == Side.BLACK && verticalMovement != -jumpFactor) {
             return false;
         }
         //Red checkers can only move up
-        if(side == Side.RED && verticalMovement != -jumpFactor) {
+        if(side == Side.RED && verticalMovement != jumpFactor) {
             return false;
         }
 

@@ -67,9 +67,12 @@ public class BoardLogic implements IBoardLogic {
     }
 
     private boolean isFieldTaken(IBoard board, Move move) {
-        if(board.getBoardField(new Point(move.getGoalx(),move.getGoaly())).isOccupied)
-            return false;
 
+
+        if(!board.getBoardField(new Point(move.getGoalx(),move.getGoaly())).isOccupied) {
+
+            return false;
+        }
         return true;
     }
 

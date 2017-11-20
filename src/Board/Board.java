@@ -39,6 +39,34 @@ public class Board implements IBoard {
         this.gameBoard = gameBoard;
     }
 
+    public Board(BoardField[][] cloneBoard) {
+        numberOfRedCheckers = 0;
+        numberOfBlackCheckers =0;
+        numberOfBlackKings =0;
+        numberOfRedKings=0;
+
+        this.gameBoard = cloneBoard;
+
+        for(int i =0;i<8;i++){
+            for(int j=0;j<8;j++){
+                CheckerType type = getBoardField(new Point(i,j)).checkerType;
+                if(type == CheckerType.BLACK){
+                    numberOfBlackCheckers++;
+                }
+                else if(type == CheckerType.BLACK_KING){
+                    numberOfBlackKings++;
+                }
+                else if(type == CheckerType.RED){
+                    numberOfRedCheckers++;
+                }
+                else if(type == CheckerType.RED_KING){
+                    numberOfRedKings++;
+                }
+            }
+        }
+
+    }
+
     public void init() {
         //Empty
         BoardField empty = new BoardField(false);
@@ -117,11 +145,30 @@ public class Board implements IBoard {
 
     @Override
     public Board clone() {
-        return null;
+
+        BoardField[][] cloneBoard = new BoardField[8][8];
+
+        for(int i = 0;i<gameBoard.length;i++){
+            for (int j =0;j<gameBoard.length;j++){
+                cloneBoard [i][j] = gameBoard[i][j];
+            }
+        }
+
+        Board clone = new Board(cloneBoard);
+        return clone;
+
     }
 
     @Override
     public void print() {
+        for(int i = 0; i< gameBoard.length;i++){
+            for(int j = 0; j< gameBoard.length;j++){
+                System.out.println("i: "+i+" j: "+j+"  "+gameBoard[i][j].checkerType);
+
+
+            }
+
+        }
 
     }
 
