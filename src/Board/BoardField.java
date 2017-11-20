@@ -33,6 +33,7 @@ public class BoardField {
 
     public BoardField(boolean isOccupied) {
         this.isOccupied = isOccupied;
+        this.boardPosition = boardPosition;
     }
 
     @Override
@@ -67,5 +68,19 @@ public class BoardField {
             return false;
         }
         return true;
+    }
+
+    public Point getBoardPosition() {
+        return boardPosition;
+    }
+
+    public void setBoardPosition(int x, int y) {
+        if(this.boardPosition==null){
+            this.boardPosition = new Point(x,y);
+        } else {
+            boardPosition.x = x;
+            boardPosition.y = y;
+        }
+
     }
 }

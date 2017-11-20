@@ -24,8 +24,8 @@ public class BoardLogic implements IBoardLogic {
     @Override
     public List<Move> getAllvalideMoves(Player p, IBoard board) {
         List<Move> moves = new ArrayList<>();
-
-        for(BoardField boardField : board.getBoardFields(p)) {
+        List<BoardField> playerFields = board.getBoardFields(p);
+        for(BoardField boardField : playerFields) {
             moves.addAll(validmoves(boardField, board, p));
         }
         return moves;
@@ -73,46 +73,71 @@ public class BoardLogic implements IBoardLogic {
         return true;
     }
 
+    private boolean isValidBoardPosition(Point p) {
+        if(p.x >7 || p.y >7 || p.x <0 || p.y <0)
+            return false;
+        return true;
+    }
+
     private List<Move> getJumpMoves(BoardField boardField, IBoard board) {
         List<Move> jumpMoves = new ArrayList<>();
         Point startPosition = boardField.boardPosition;
         //Right up
-        BoardField rightUp = board.getBoardField(new Point(startPosition.x+1,startPosition.y+1));
+        Point rightUpGoal = new Point(startPosition.x+1,startPosition.y+1);
+        Point rightUpJumpMoveGoal = new Point(startPosition.x+2, startPosition.y+2);
+        if(isValidBoardPosition(rightUpGoal)&&isValidBoardPosition(rightUpJumpMoveGoal)) {
+            BoardField rightUp = board.getBoardField(rightUpGoal);
+            Move rightUpJumpMove = new Move(startPosition, rightUpJumpMoveGoal);
+            if(rightUp.isOccupied && rightUp.owner.side!=boardField.owner.side &&
+                    moveValidator.isValidMove(boardField.owner, boardField,rightUpJumpMove, true) &&
+                    !isFieldTaken(board,rightUpJumpMove)) {
+                jumpMoves.add(rightUpJumpMove);
+            }
+        }
+
         //Left up
-        BoardField leftUp = board.getBoardField(new Point(startPosition.x-1, startPosition.y+1));
+        Point leftUpGoal = new Point(startPosition.x-1, startPosition.y+1);
+        Point leftUpJumpMoveGoal = new Point(startPosition.x-2, startPosition.y+2);
+        if(isValidBoardPosition(leftUpGoal)&&isValidBoardPosition(leftUpJumpMoveGoal)) {
+            BoardField leftUp = board.getBoardField(leftUpGoal);
+            Move leftUpJumpMove = new Move(startPosition, leftUpJumpMoveGoal);
+            if(leftUp.isOccupied && leftUp.owner.side!=boardField.owner.side &&
+                    moveValidator.isValidMove(boardField.owner, boardField,leftUpJumpMove, true) &&
+                    !isFieldTaken(board,leftUpJumpMove)) {
+                jumpMoves.add(leftUpJumpMove);
+            }
+        }
+
         //Right down
-        BoardField rightDown = board.getBoardField(new Point(startPosition.x+1,startPosition.y-1));
+        Point rightDownGoal = new Point(startPosition.x+1,startPosition.y-1);
+        Point rightDownJumpMoveGoal = new Point(startPosition.x+2, startPosition.y-2);
+        if(isValidBoardPosition(rightDownGoal) && isValidBoardPosition(rightDownJumpMoveGoal)) {
+            BoardField rightDown = board.getBoardField(rightDownGoal);
+            Move rightDownJumpMove = new Move(startPosition, rightDownJumpMoveGoal);
+            if(rightDown.isOccupied && rightDown.owner.side!=boardField.owner.side &&
+                    moveValidator.isValidMove(boardField.owner, boardField,rightDownJumpMove, true) &&
+                    !isFieldTaken(board,rightDownJumpMove)) {
+                jumpMoves.add(rightDownJumpMove);
+            }
+        }
+
 
         //Left down
-        BoardField leftDown = board.getBoardField(new Point(startPosition.x-1,startPosition.y-1));
-
-        Move rightUpJumpMove = new Move(startPosition, new Point(startPosition.x+2, startPosition.y+2));
-        if(rightUp.isOccupied && rightUp.owner.side!=boardField.owner.side &&
-                moveValidator.isValidMove(boardField.owner, boardField,rightUpJumpMove, true) &&
-                !isFieldTaken(board,rightUpJumpMove)) {
-                jumpMoves.add(rightUpJumpMove);
+        Point leftDownGoal = new Point(startPosition.x-1,startPosition.y-1);
+        Point leftDownJumpMoveGoal = new Point(startPosition.x-2, startPosition.y-2);
+        if(isValidBoardPosition(leftDownGoal)&&isValidBoardPosition(leftDownJumpMoveGoal)) {
+            BoardField leftDown = board.getBoardField(leftDownGoal);
+            Move leftDownJumpMove = new Move(startPosition, leftDownJumpMoveGoal);
+            if(leftDown.isOccupied && leftDown.owner.side!=boardField.owner.side &&
+                    moveValidator.isValidMove(boardField.owner, boardField,leftDownJumpMove, true)&&
+                    !isFieldTaken(board,leftDownJumpMove)) {
+                jumpMoves.add(leftDownJumpMove);
+            }
         }
 
-        Move leftUpJumpMove = new Move(startPosition, new Point(startPosition.x-2, startPosition.y+2));
-        if(leftUp.isOccupied && leftUp.owner.side!=boardField.owner.side &&
-                moveValidator.isValidMove(boardField.owner, boardField,leftUpJumpMove, true) &&
-                !isFieldTaken(board,leftUpJumpMove)) {
-            jumpMoves.add(leftUpJumpMove);
-        }
 
-        Move rightDownJumpMove = new Move(startPosition, new Point(startPosition.x+2, startPosition.y-2));
-        if(rightDown.isOccupied && rightDown.owner.side!=boardField.owner.side &&
-                moveValidator.isValidMove(boardField.owner, boardField,rightDownJumpMove, true) &&
-                !isFieldTaken(board,rightDownJumpMove)) {
-            jumpMoves.add(rightDownJumpMove);
-        }
 
-        Move leftDownJumpMove = new Move(startPosition, new Point(startPosition.x-2, startPosition.y-2));
-        if(leftDown.isOccupied && leftDown.owner.side!=boardField.owner.side &&
-                moveValidator.isValidMove(boardField.owner, boardField,leftDownJumpMove, true)&&
-                !isFieldTaken(board,leftDownJumpMove)) {
-            jumpMoves.add(leftDownJumpMove);
-        }
+
 
 
         return jumpMoves;
@@ -124,7 +149,14 @@ public class BoardLogic implements IBoardLogic {
 
     @Override
     public List<Move> getJumpMoves(Board b, Player p) {
-        return null;
+
+        List<Move> jumpMoves = new ArrayList<>();
+
+        for(BoardField boardField : getAllCheckers(p,b)) {
+            jumpMoves.addAll(getJumpMoves(boardField,b));
+        }
+
+        return jumpMoves;
     }
 
     @Override

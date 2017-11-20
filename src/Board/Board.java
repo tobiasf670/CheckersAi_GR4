@@ -47,7 +47,8 @@ public class Board implements IBoard {
         BoardField black = new BoardField(this.black, CheckerType.BLACK, true);
         BoardField red = new BoardField(this.red, CheckerType.RED, true);
 
-        this.gameBoard = new BoardField[][]{
+
+        /*this.gameBoard = new BoardField[][]{
                 { empty, black, empty, black, empty, black, empty, black},
                 { black, empty, black, empty, black, empty, black, empty},
                 { empty, black, empty, black, empty, black, empty, black},
@@ -57,13 +58,60 @@ public class Board implements IBoard {
                 { empty, red, empty, red, empty, red, empty, red},
                 { red, empty, red, empty, red, empty, red, empty},
 
-        };
+        };*/
 
+        this.gameBoard = new BoardField[8][8];
 
+        gameBoard[0] = getBoardRow(this.black,0,true);
+        gameBoard[1] = getBoardRow(this.black,1,false);
+        gameBoard[2] = getBoardRow(this.black,2,true);
+        gameBoard[3] = getEmptyRow(3);
+        gameBoard[4] = getEmptyRow(4);
+        gameBoard[5] = getBoardRow(this.red,5,false);
+        gameBoard[6] = getBoardRow(this.red,6,true);
+        gameBoard[7] = getBoardRow(this.red,7,false);
         this.numberOfBlackCheckers = 12;
         this.numberOfBlackKings = 0;
         this.numberOfRedCheckers = 12;
         this.numberOfRedKings = 0;
+    }
+    private BoardField[] getEmptyRow(int rowNumber) {
+        BoardField[] row = new BoardField[8];
+        for(int i = 0; i<8; i++) {
+            row[i] = new BoardField(false);
+            row[i].setBoardPosition(rowNumber,i);
+        }
+        return row;
+    }
+    private BoardField[] getBoardRow(Player player, int rowNumber, boolean evenRow) {
+        CheckerType type;
+        if(player.side == Side.BLACK) {
+            type = CheckerType.BLACK;
+        } else {
+            type = CheckerType.RED;
+        }
+        BoardField[] row = new BoardField[8];
+        if(evenRow) {
+            for(int i = 0; i <8; i++) {
+                if(i%2==0) {
+                    row[i] = new BoardField(false);
+                    row[i].setBoardPosition(rowNumber,i);
+                } else {
+                    row[i] = new BoardField(player, type, true, new Point(rowNumber,i));
+                }
+            }
+        } else {
+            for(int i = 0; i <8; i++) {
+                if(i%2!=0) {
+                    row[i] = new BoardField(false);
+                    row[i].setBoardPosition(rowNumber,i);
+                } else {
+                    row[i] = new BoardField(player, type, true, new Point(rowNumber,i));
+                }
+            }
+        }
+        return row;
+
     }
 
 
@@ -78,7 +126,13 @@ public class Board implements IBoard {
     }
 
     public BoardField getBoardField(Point point) {
-        return gameBoard[point.x][point.y];
+        try{
+            return gameBoard[point.x][point.y];
+        }catch(IndexOutOfBoundsException e) {
+            return null;
+        }
+
+        //throw(new IndexOutOfBoundsException(point +"out of bounds"));
     }
 
     @Override
@@ -109,10 +163,12 @@ public class Board implements IBoard {
     @Override
     public List<BoardField> getBoardFields(Player player) {
         List<BoardField> boardFields = new ArrayList<BoardField>();
-        for(BoardField boardField[] : gameBoard) {
+        for(int j = 0; j<8; j++) {
             for(int i = 0; i<8; i++) {
-                if(boardField[i].owner.side==player.side) {
-                    boardFields.add(boardField[i]);
+                BoardField curField = gameBoard[j][i];
+                if(curField.isOccupied)
+                if(curField.owner.side==player.side) {
+                    boardFields.add(curField);
                 }
             }
         }
