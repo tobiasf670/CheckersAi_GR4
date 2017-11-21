@@ -20,8 +20,6 @@ public class Main
 
     public static void main(String[] args) {
         List<Move> all = new ArrayList<>();
-                //Player p1 = new Player(Side.RED);
-                //Player p2 = new Player(Side.BLACK);
 
                 BoardLogic BL = new BoardLogic();
                 BL.createPlayer(Side.RED);
@@ -30,18 +28,18 @@ public class Main
                 Player p2 = BL.getPlayers().get(1);
                 Board board = new Board(p1,p2);
                 board.init();
-                all = BL.getAllvalideMoves(p1,board);
-               // board.print();
                 Board testClone = board.clone();
+
                 MoveValidator vm = new MoveValidator();
                 HeuristicCalculator hc = new HeuristicCalculator();
                 AImoveCalculator ai = new AImoveCalculator(vm,hc,BL);
-            double p4 =    ai.minimax(board,p1,4,true,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY);
+            //double p4 =    ai.minimax(board,p1,4,true,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY);
+        Move m = null;
+        m = ai.bestMove(testClone,p2);
+        System.out.println("");
+        System.out.println("*************");
+               System.out.println("Det bedste move jeg kan lave er:   "+m);
 
-
-               System.out.println(p4);
-                        //System.out.println("Moves"+all.toString());
-                 //       System.out.println("Moves"+BL.getAllvalideMoves(p1,testClone));
 
 
 

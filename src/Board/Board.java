@@ -184,9 +184,10 @@ public class Board implements IBoard {
     }
 
     @Override
-    public void setBoardField(int row, int col, CheckerType type) {
+    public void setBoardField(int row, int col, CheckerType type,Player p) {
 
-        gameBoard[row][col].checkerType = type ;
+        gameBoard[row][col] = new BoardField(p, type, true, new Point(row,col));
+        //gameBoard[row][col].checkerType = type ;
     }
 
     @Override
@@ -234,6 +235,8 @@ public class Board implements IBoard {
         BoardField empty = new BoardField(false);
         BoardField red = new BoardField(this.red, CheckerType.RED, true);
         BoardField redKing = new BoardField(this.red, CheckerType.RED_KING, true);
+        BoardField black = new BoardField(this.black, CheckerType.BLACK, true);
+
 
         this.gameBoard = new BoardField[][]{
                 { empty, empty, empty, empty, empty, empty, empty, empty},
@@ -242,7 +245,7 @@ public class Board implements IBoard {
                 { empty, empty, empty, empty, empty, empty, empty, empty},
                 { empty, empty, empty, empty, empty, empty, empty, empty},
                 { empty, empty, empty, empty, empty, empty, empty, empty},
-                { empty, empty, empty, empty, empty, empty, empty, empty},
+                { empty, black, empty, empty, empty, empty, empty, empty},
                 { red, empty, empty, empty, red, empty, red, empty},
 
         };

@@ -85,6 +85,7 @@ public class BoardLogic implements IBoardLogic {
 
     private List<Move> getJumpMoves(BoardField boardField, IBoard board) {
         List<Move> jumpMoves = new ArrayList<>();
+
         Point startPosition = boardField.boardPosition;
         //Right up
         Point rightUpGoal = new Point(startPosition.x+1,startPosition.y+1);
@@ -115,6 +116,7 @@ public class BoardLogic implements IBoardLogic {
         //Right down
         Point rightDownGoal = new Point(startPosition.x+1,startPosition.y-1);
         Point rightDownJumpMoveGoal = new Point(startPosition.x+2, startPosition.y-2);
+
         if(isValidBoardPosition(rightDownGoal) && isValidBoardPosition(rightDownJumpMoveGoal)) {
             BoardField rightDown = board.getBoardField(rightDownGoal);
             Move rightDownJumpMove = new Move(startPosition, rightDownJumpMoveGoal);
@@ -156,7 +158,11 @@ public class BoardLogic implements IBoardLogic {
 
         List<Move> jumpMoves = new ArrayList<>();
 
+        int i = 0;
+
         for(BoardField boardField : getAllCheckers(p,b)) {
+            System.out.println(getAllCheckers(p,b).get(i).getBoardPosition());
+            i++;
             jumpMoves.addAll(getJumpMoves(boardField,b));
         }
 
@@ -169,9 +175,12 @@ public class BoardLogic implements IBoardLogic {
         for(int i = 0; i <8; i++) {
             for(int j = 0; j <8; j++) {
                 BoardField field = board.getBoardField(new Point(i,j));
-                if(field.isOccupied && field.owner.equals(p)) {
-                    allCheckers.add(field);
+                if(field.owner != null){
+                    if(field.isOccupied && field.owner.equals(p)) {
+                        allCheckers.add(field);
+                    }
                 }
+
             }
         }
         return allCheckers;
@@ -191,7 +200,7 @@ public class BoardLogic implements IBoardLogic {
     }
 
     @Override
-    public boolean makeMove(Board board, Move m, Side s) {
+    public boolean makeMove(Board board, Move m, Side s,Player p) {
 
         if(m == null){
             return false;
@@ -211,12 +220,10 @@ public class BoardLogic implements IBoardLogic {
         else{
             type = CheckerType.RED;
         }
-
-
-        board.setBoardField(sx,sy,CheckerType.EMPTY);
-        board.setBoardField(gx,gy,type);
-
-
+        System.out.println();
+    //System.out.println("move er lavet"+ m);
+        board.removeChecker(start);
+        board.setBoardField(gx,gy,type,p);
 
         return true;
     }

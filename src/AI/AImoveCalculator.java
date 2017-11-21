@@ -36,7 +36,7 @@ public class AImoveCalculator implements IAi {
 
         for(Move move : allValidMoves) {
             Board clone = b.clone();
-            boardLogic.makeMove(clone,move,player.side);
+            boardLogic.makeMove(clone,move,player.side,player);
             //for each possible AI move, calculate the heuristic with minimax
             heuristicScores.add(minimax(clone, player,4, true, 0.0,0.0));
         }
@@ -62,8 +62,6 @@ public class AImoveCalculator implements IAi {
 
 
            List<Move> moveICanMake = boardLogic.getAllvalideMoves(player,board) ;
-            System.out.println();
-           board.print();
 
         double v = 0;
 
@@ -72,7 +70,7 @@ public class AImoveCalculator implements IAi {
             for(int i = 0;i< moveICanMake.size();i++) {
                
                 boards = board.clone();
-                boardLogic.makeMove(boards,moveICanMake.get(i),player.side);
+                boardLogic.makeMove(boards,moveICanMake.get(i),player.side,player);
 
                 double res = minimax(boards,changePlayer(player),searchDepth -1,!maximizingPlayer,alpha,beta);
 
@@ -91,7 +89,7 @@ public class AImoveCalculator implements IAi {
 
             for(int i = 0;i<moveICanMake.size();i++){
                 boards = board.clone();
-                boardLogic.makeMove(boards,moveICanMake.get(i),player.side);
+                boardLogic.makeMove(boards,moveICanMake.get(i),player.side,player);
                 double res = minimax(boards,changePlayer(player),searchDepth-1,!maximizingPlayer,alpha,beta);
 
                 v = Math.min(res,v);
