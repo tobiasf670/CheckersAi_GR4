@@ -85,5 +85,18 @@ public class BoardField {
 
     }
 
-
+    @Override
+    public String toString() {
+        if(checkerType==CheckerType.BLACK) {
+            return "x";
+        } else if(checkerType == CheckerType.RED) {
+            return "o";
+        } else if(checkerType == CheckerType.BLACK_KING) {
+            return "X";
+        } else if(checkerType == CheckerType.RED_KING) {
+            return "O";
+        }
+        //must be empty
+        return "";
+    }
 }

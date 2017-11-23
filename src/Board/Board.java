@@ -170,6 +170,7 @@ public class Board implements IBoard {
     //Virker fint, Printer ikke korrekt.
     @Override
     public void print() {
+        /*
         for(int i = 0; i< gameBoard.length;i++){
             System.out.println("");
             for(int j = 0; j< gameBoard.length;j++){
@@ -177,7 +178,26 @@ public class Board implements IBoard {
 
 
             }
+        }*/
+
+        int cellSize = 2;
+        int rowLength = boardYsize * cellSize + boardXsize + 1;
+        final char[] array = new char[rowLength];
+        Arrays.fill(array, '-');
+        String rowDivider = new String(array);
+        for(int i = 0; i < gameBoard.length; i++)
+        {
+            System.out.println(rowDivider);
+            for(int j = 0; j < gameBoard[i].length; j++)
+            {
+                System.out.printf("|%"+cellSize+"s",gameBoard[i][j]);
+                if(j == (gameBoard[i].length - 1)) System.out.println("|");
+            }
         }
+        System.out.println(rowDivider);
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
     }
 
     public BoardField getBoardField(Point point) {
@@ -263,5 +283,10 @@ public class Board implements IBoard {
         this.numberOfBlackKings = 0;
         this.numberOfRedCheckers = 12;
         this.numberOfRedKings = 0;
+    }
+
+    private static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 }

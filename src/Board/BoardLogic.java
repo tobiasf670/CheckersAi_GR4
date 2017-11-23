@@ -227,4 +227,6 @@ public class BoardLogic implements IBoardLogic {
 
         return true;
     }
+
+    //private void checkIfMoveKilled
 }
