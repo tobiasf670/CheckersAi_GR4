@@ -13,6 +13,7 @@ import static java.util.Collections.max;
 
 /**
  * Created by malthe on 11/19/17.
+ * AI - Logic
  */
 public class AImoveCalculator implements IAi {
 
@@ -22,6 +23,7 @@ public class AImoveCalculator implements IAi {
 
     private static final int maxSearchDepth = 8;
 
+    //Constructor.
     public AImoveCalculator(IMoveValidator moveValidator, IHeuristicCalculator heuristicCalculator,
                             IBoardLogic boardLogic) {
         this.moveValidator = moveValidator;
@@ -29,6 +31,7 @@ public class AImoveCalculator implements IAi {
         this.boardLogic = boardLogic;
     }
 
+    //Calculates the best move for the AI.
     @Override
     public Move bestMove(IBoard b, Player player) {
         List<Double> heuristicScores = new ArrayList<>();
@@ -46,6 +49,7 @@ public class AImoveCalculator implements IAi {
         return allValidMoves.get(heuristicScores.indexOf(bestScore));
     }
 
+    //MinMax with alpha beta phruning algorithm created.
     public double minimax(Board board, Player player, int searchDepth,
                            boolean maximizingPlayer, double alpha, double beta) {
 
@@ -56,12 +60,11 @@ public class AImoveCalculator implements IAi {
             return heuristicCalculator.CalculateHeuristic(board, player);
         }
 
-
         Board boards = null;
 
 
-
            List<Move> moveICanMake = boardLogic.getAllvalideMoves(player,board) ;
+
 
         double v = 0;
 
@@ -104,6 +107,7 @@ public class AImoveCalculator implements IAi {
         return v;
     }
 
+    //Swiches back to player after AI have made a move.
     public Player changePlayer(Player p){
         if(boardLogic.getPlayers().get(0).side == p.side)   {
                     return boardLogic.getPlayers().get(1) ;

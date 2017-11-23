@@ -8,6 +8,7 @@ import enums.Side;
 /**
  * Created by malthe on 11/17/17.
  */
+
 public class HeuristicCalculator implements IHeuristicCalculator{
 
     private final double kingFactor = 1.2;

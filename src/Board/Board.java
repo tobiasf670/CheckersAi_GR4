@@ -11,20 +11,24 @@ import java.util.List;
 
 public class Board implements IBoard {
 
+    //Board size
     public static final int boardYsize = 8;
     public static final int boardXsize = 8;
 
+    //Players
     private Player red;
     private Player black;
 
-
+    //Statics of the table
     public int numberOfBlackCheckers;
     public int numberOfBlackKings;
     public int numberOfRedCheckers;
     public int numberOfRedKings;
 
+    //Board array
     private BoardField[][] gameBoard;
 
+    //Board contructor
     public Board(Player red, Player black) {
 
         this.black = black;
@@ -190,6 +194,7 @@ public class Board implements IBoard {
         //gameBoard[row][col].checkerType = type ;
     }
 
+    //Logic for removing checker
     @Override
     public boolean removeChecker(Point point) {
         BoardField field = gameBoard[point.x][point.y];
