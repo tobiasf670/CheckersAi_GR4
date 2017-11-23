@@ -36,13 +36,13 @@ public class BoardLogic implements IBoardLogic {
     public List<Move> validmoves(BoardField boardField, IBoard board, Player player) {
         Point startPosition = boardField.boardPosition;
         //Right up
-        Move move = new Move(startPosition, new Point(startPosition.x+1, startPosition.y+1));
+        Move move = new Move(startPosition, new Point(startPosition.x+1, startPosition.y+1),false);
         //Left up
-        Move move1 = new Move(startPosition, new Point(startPosition.x-1,startPosition.y+1));
+        Move move1 = new Move(startPosition, new Point(startPosition.x-1,startPosition.y+1), false);
         //Right down
-        Move move2 = new Move(startPosition, new Point(startPosition.x+1,startPosition.y-1));
+        Move move2 = new Move(startPosition, new Point(startPosition.x+1,startPosition.y-1), false);
         //Left down
-        Move move3 = new Move(startPosition, new Point(startPosition.x-1,startPosition.y-1));
+        Move move3 = new Move(startPosition, new Point(startPosition.x-1,startPosition.y-1), false);
 
         List<Move> validMoves = new ArrayList<>();
 
@@ -88,11 +88,11 @@ public class BoardLogic implements IBoardLogic {
 
         Point startPosition = boardField.boardPosition;
         //Right up
-        Point rightUpGoal = new Point(startPosition.x+1,startPosition.y+1);
-        Point rightUpJumpMoveGoal = new Point(startPosition.x+2, startPosition.y+2);
+        Point rightUpGoal = new Point(startPosition.x+1,startPosition.y-1);
+        Point rightUpJumpMoveGoal = new Point(startPosition.x+2, startPosition.y-2);
         if(isValidBoardPosition(rightUpGoal)&&isValidBoardPosition(rightUpJumpMoveGoal)) {
             BoardField rightUp = board.getBoardField(rightUpGoal);
-            Move rightUpJumpMove = new Move(startPosition, rightUpJumpMoveGoal);
+            Move rightUpJumpMove = new Move(startPosition, rightUpJumpMoveGoal, true);
             if(rightUp.isOccupied && rightUp.owner.side!=boardField.owner.side &&
                     moveValidator.isValidMove(boardField.owner, boardField,rightUpJumpMove, true) &&
                     !isFieldTaken(board,rightUpJumpMove)) {
@@ -101,11 +101,11 @@ public class BoardLogic implements IBoardLogic {
         }
 
         //Left up
-        Point leftUpGoal = new Point(startPosition.x-1, startPosition.y+1);
-        Point leftUpJumpMoveGoal = new Point(startPosition.x-2, startPosition.y+2);
+        Point leftUpGoal = new Point(startPosition.x-1, startPosition.y-1);
+        Point leftUpJumpMoveGoal = new Point(startPosition.x-2, startPosition.y-2);
         if(isValidBoardPosition(leftUpGoal)&&isValidBoardPosition(leftUpJumpMoveGoal)) {
             BoardField leftUp = board.getBoardField(leftUpGoal);
-            Move leftUpJumpMove = new Move(startPosition, leftUpJumpMoveGoal);
+            Move leftUpJumpMove = new Move(startPosition, leftUpJumpMoveGoal,true);
             if(leftUp.isOccupied && leftUp.owner.side!=boardField.owner.side &&
                     moveValidator.isValidMove(boardField.owner, boardField,leftUpJumpMove, true) &&
                     !isFieldTaken(board,leftUpJumpMove)) {
@@ -114,12 +114,12 @@ public class BoardLogic implements IBoardLogic {
         }
 
         //Right down
-        Point rightDownGoal = new Point(startPosition.x+1,startPosition.y-1);
-        Point rightDownJumpMoveGoal = new Point(startPosition.x+2, startPosition.y-2);
+        Point rightDownGoal = new Point(startPosition.x+1,startPosition.y+1);
+        Point rightDownJumpMoveGoal = new Point(startPosition.x+2, startPosition.y+2);
 
         if(isValidBoardPosition(rightDownGoal) && isValidBoardPosition(rightDownJumpMoveGoal)) {
             BoardField rightDown = board.getBoardField(rightDownGoal);
-            Move rightDownJumpMove = new Move(startPosition, rightDownJumpMoveGoal);
+            Move rightDownJumpMove = new Move(startPosition, rightDownJumpMoveGoal, true);
             if(rightDown.isOccupied && rightDown.owner.side!=boardField.owner.side &&
                     moveValidator.isValidMove(boardField.owner, boardField,rightDownJumpMove, true) &&
                     !isFieldTaken(board,rightDownJumpMove)) {
@@ -129,11 +129,11 @@ public class BoardLogic implements IBoardLogic {
 
 
         //Left down
-        Point leftDownGoal = new Point(startPosition.x-1,startPosition.y-1);
-        Point leftDownJumpMoveGoal = new Point(startPosition.x-2, startPosition.y-2);
+        Point leftDownGoal = new Point(startPosition.x-1,startPosition.y+1);
+        Point leftDownJumpMoveGoal = new Point(startPosition.x-2, startPosition.y+2);
         if(isValidBoardPosition(leftDownGoal)&&isValidBoardPosition(leftDownJumpMoveGoal)) {
             BoardField leftDown = board.getBoardField(leftDownGoal);
-            Move leftDownJumpMove = new Move(startPosition, leftDownJumpMoveGoal);
+            Move leftDownJumpMove = new Move(startPosition, leftDownJumpMoveGoal, true);
             if(leftDown.isOccupied && leftDown.owner.side!=boardField.owner.side &&
                     moveValidator.isValidMove(boardField.owner, boardField,leftDownJumpMove, true)&&
                     !isFieldTaken(board,leftDownJumpMove)) {
@@ -225,8 +225,43 @@ public class BoardLogic implements IBoardLogic {
         board.removeChecker(start);
         board.setBoardField(gx,gy,type,p);
 
+        if(m.isJumpMove) {
+            removeEnemyPiece(m, p, board);
+            //check if additional "free" jump moves has to be performed
+
+            takeFreeJumpMoves(goal, board, s, p);
+        }
+
         return true;
     }
 
-    //private void checkIfMoveKilled
+    private void takeFreeJumpMoves(Point position, Board board, Side side, Player player) {
+        BoardField start = board.getBoardField(new Point(position.x,position.y));
+        List<Move> jumpMoves = getJumpMoves(start,board);
+
+        for(Move move : jumpMoves) {
+            if(move.getStartx() == position.x && move.getStarty() == position.y) {
+                makeMove(board, move, side, player);
+                break;
+            }
+        }
+    }
+
+
+
+    private void removeEnemyPiece(Move move, Player player, Board b) {
+        int checkerToRemoveX = move.getStartx();
+        int checkerToRemoveY = move.getStarty();
+        if(moveValidator.isMovingUp(move)) {
+            checkerToRemoveY--;
+        } else {
+            checkerToRemoveY++;
+        }
+        if(moveValidator.isMovingRight(move)) {
+            checkerToRemoveX--;
+        } else {
+            checkerToRemoveX++;
+        }
+        b.removeChecker(new Point(checkerToRemoveX, checkerToRemoveY));
+    }
 }

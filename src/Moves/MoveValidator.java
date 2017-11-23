@@ -86,4 +86,17 @@ public class MoveValidator implements IMoveValidator {
         }
         return false;
     }
+
+    public boolean isMovingUp(Move m) {
+        if(m.getGoaly()-m.getStarty() > 0) {
+            return true;
+        }
+        return false;
+    }
+    public boolean isMovingRight(Move move) {
+        if(move.getGoalx()-move.getStartx() > 0) {
+            return true;
+        }
+        return false;
+    }
 }

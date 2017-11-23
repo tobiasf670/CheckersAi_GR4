@@ -68,6 +68,7 @@ public class Board implements IBoard {
                 }
             }
         }
+        setBoardCoordinates();
 
     }
 
@@ -288,5 +289,28 @@ public class Board implements IBoard {
     private static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
+    }
+
+    private void setBoardCoordinates() {
+        for(int i = 0; i<8; i++)
+            for(int j = 0; j<8; j++)
+                gameBoard[i][j].boardPosition = new Point(i,j);
+    }
+
+    public void initTestBoardForJumpMoves() {
+
+        gameBoard[0] = getBoardRow(this.black,0,true);
+        gameBoard[1] = getBoardRow(this.black,1,false);
+        gameBoard[2] = getBoardRow(this.black,2,true);
+        gameBoard[3] = getEmptyRow(3);
+        gameBoard[4] = getEmptyRow(4);
+        gameBoard[5] = getBoardRow(this.red,5,false);
+        gameBoard[6] = getBoardRow(this.red,6,true);
+        gameBoard[7] = getBoardRow(this.red,7,false);
+        this.numberOfBlackCheckers = 12;
+        this.numberOfBlackKings = 0;
+        this.numberOfRedCheckers = 12;
+        this.numberOfRedKings = 0;
+
     }
 }

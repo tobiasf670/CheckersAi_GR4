@@ -56,8 +56,8 @@ public class testMoveValidator {
     public void testRegularCheckerMovement() {
         BoardField checker = board.getBoardField(new Point(7,0));
 
-        Move move = new Move(new Point(7,0),new Point(6,1));
-        Move move1 = new Move(new Point(7,0), new Point(5,2));
+        Move move = new Move(new Point(7,0),new Point(6,1), false);
+        Move move1 = new Move(new Point(7,0), new Point(5,2), false);
 
         boolean isValidMove = validator.isValidMove(red, checker, move, false);
 
@@ -75,9 +75,9 @@ public class testMoveValidator {
     public void testKingMovement() {
         BoardField king = board.getBoardField(new Point(1,2));
 
-        Move move = new Move(new Point(1,2),new Point(0,1));
-        Move move1 = new Move(new Point(1,2), new Point(2,3));
-        Move move2 = new Move(new Point(1,2), new Point(6,6));
+        Move move = new Move(new Point(1,2),new Point(0,1), false);
+        Move move1 = new Move(new Point(1,2), new Point(2,3), false);
+        Move move2 = new Move(new Point(1,2), new Point(6,6), false);
 
         boolean isValidMove = validator.isValidMove(red, king, move, false);
 
