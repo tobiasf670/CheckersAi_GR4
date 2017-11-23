@@ -229,7 +229,8 @@ public class BoardLogic implements IBoardLogic {
             removeEnemyPiece(m, p, board);
             //check if additional "free" jump moves has to be performed
 
-            takeFreeJumpMoves(goal, board, s, p);
+            //Let the AI run alphabeta for one additional turn instead
+            //takeFreeJumpMoves(goal, board, s, p);
         }
 
         return true;
