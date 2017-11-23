@@ -35,13 +35,10 @@ public class Main
                 AImoveCalculator ai = new AImoveCalculator(vm,hc,BL);
             //double p4 =    ai.minimax(board,p1,4,true,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY);
         Move m = null;
-        m = ai.bestMove(testClone,p2);
+        m = ai.bestMove(testClone,p1);
         System.out.println("");
         System.out.println("*************");
                System.out.println("Det bedste move jeg kan lave er:   "+m);
-
-
-
-
+               board.print();
     }
 }

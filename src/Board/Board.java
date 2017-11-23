@@ -92,8 +92,10 @@ public class Board implements IBoard {
 
         };*/
 
+        //Creating the BoardField in a double array with 8 fields in x and y axis.
         this.gameBoard = new BoardField[8][8];
 
+        //The start board
         gameBoard[0] = getBoardRow(this.black,0,true);
         gameBoard[1] = getBoardRow(this.black,1,false);
         gameBoard[2] = getBoardRow(this.black,2,true);
@@ -107,6 +109,7 @@ public class Board implements IBoard {
         this.numberOfRedCheckers = 12;
         this.numberOfRedKings = 0;
     }
+
     private BoardField[] getEmptyRow(int rowNumber) {
         BoardField[] row = new BoardField[8];
         for(int i = 0; i<8; i++) {
@@ -115,6 +118,7 @@ public class Board implements IBoard {
         }
         return row;
     }
+
     private BoardField[] getBoardRow(Player player, int rowNumber, boolean evenRow) {
         CheckerType type;
         if(player.side == Side.BLACK) {
@@ -163,6 +167,7 @@ public class Board implements IBoard {
 
     }
 
+    //Virker fint, Printer ikke korrekt.
     @Override
     public void print() {
         for(int i = 0; i< gameBoard.length;i++){
@@ -172,9 +177,7 @@ public class Board implements IBoard {
 
 
             }
-
         }
-
     }
 
     public BoardField getBoardField(Point point) {
