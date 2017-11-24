@@ -19,8 +19,10 @@ public class HeuristicCalculator implements IHeuristicCalculator{
         double valueForBlack = board.numberOfBlackCheckers + (board.numberOfBlackKings*kingFactor);
 
         if(player.side == Side.BLACK) {
-            return(valueForBlack-valueForRed);
+            double result = valueForBlack-valueForRed;
+            return(result);
         }
-        return(valueForRed-valueForBlack);
+        double result = valueForRed-valueForBlack;
+        return(result);
     }
 }

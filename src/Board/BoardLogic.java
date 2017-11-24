@@ -266,5 +266,6 @@ public class BoardLogic implements IBoardLogic {
         }
         System.out.println(checkerToRemoveX+" og "+checkerToRemoveY);
         b.removeChecker(new Point(checkerToRemoveX, checkerToRemoveY));
+        b.updateBoardScore(new Point(checkerToRemoveX, checkerToRemoveY));
     }
 }

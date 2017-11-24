@@ -99,4 +99,9 @@ public class BoardField {
         //must be empty
         return "";
     }
+
+    public BoardField copy() {
+        BoardField copy = new BoardField(this.owner, this.checkerType, this.isOccupied, this.boardPosition);
+        return copy;
+    }
 }

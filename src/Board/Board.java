@@ -218,16 +218,11 @@ public class Board implements IBoard {
 
         gameBoard[row][col] = new BoardField(p, type, true, new Point(row,col));
         //gameBoard[row][col].checkerType = type ;
+
     }
 
-    //Logic for removing checker
-    @Override
-    public boolean removeChecker(Point point) {
-        BoardField field = gameBoard[point.x][point.y];
-        if(!field.isOccupied) {
-            return false;
-        }
-        field.isOccupied = false;
+    public void updateBoardScore(Point positionOfKilledPiece) {
+        BoardField field = gameBoard[positionOfKilledPiece.x][positionOfKilledPiece.y];
         if(field.owner.side == Side.BLACK) {
             if(field.checkerType == CheckerType.BLACK_KING) {
                 numberOfBlackKings--;
@@ -241,6 +236,16 @@ public class Board implements IBoard {
                 numberOfRedCheckers--;
             }
         }
+    }
+
+    //Logic for removing checker
+    @Override
+    public boolean removeChecker(Point point) {
+        BoardField field = gameBoard[point.x][point.y];
+        if(!field.isOccupied) {
+            return false;
+        }
+        field.isOccupied = false;
         field.checkerType = CheckerType.EMPTY;
 
         return true;
@@ -329,7 +334,7 @@ public class Board implements IBoard {
 
         for(int i=0; i<8; i++)
             for(int j=0; j<8; j++)
-                newBoardField[i][j]=gameBoard[i][j];
+                newBoardField[i][j]=gameBoard[i][j].copy();
 
         return newBoardField;
     }

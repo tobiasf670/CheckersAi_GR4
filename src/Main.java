@@ -27,25 +27,22 @@ public class Main
                 Player black = new Player(Side.BLACK);
                 Board board = new Board(red,black);
                 board.init();
-                Board test = new Board(red,black);
-                test.init();
+
                 MoveValidator vm = new MoveValidator();
                 HeuristicCalculator hc = new HeuristicCalculator();
                 AImoveCalculator ai = new AImoveCalculator(vm,hc,BL);
 
         List<Move> getAllMoves = BL.getAllvalideMoves(red,board);
-        BL.makeMove(test,getAllMoves.get(0),red.side,red);
-        BL.makeMove(board,getAllMoves.get(0),red.side,red);
         board.print();
-        Move bestMove = ai.bestMove(test,black);
+        Move bestMove = ai.bestMove(board,black);
         BL.makeMove(board,bestMove,black.side,black);
-       System.out.println(bestMove);
+
         board.print();
         //bestMove = ai.bestMove(board,black);
         //System.out.println(bestMove);
         //BL.makeMove(board,bestMove,black.side,black);
        //board.print();
-        test.print();
+
 
         //BL.makeMove(board,ai.bestMove(board,black),black.side,black);
         //board.print();
