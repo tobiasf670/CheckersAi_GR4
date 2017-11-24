@@ -52,4 +52,25 @@ public class Move {
     public String toString() {
     return "start: "+startx+", "+starty+" End: "+goalx+" , "+goaly;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        //Check if o is an instance of Complex or not
+        //"null instanceof [type]" also returns false
+        if (!(o instanceof Move)) {
+            return false;
+        }
+        Move object = (Move) o;
+
+        if(object.getStarty() == this.starty && object.getStartx() == this.startx &&
+                object.getGoalx() == this.goalx && object.getGoaly() == this.goaly ) {
+            return true;
+        }
+        return false;
+
+    }
 }

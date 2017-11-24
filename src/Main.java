@@ -23,7 +23,7 @@ public class Main
     public static void main(String[] args) {
 
         GameController gameController = new GameController();
-        Move move = gameController.readUserInput();
+        gameController.gameLoop();
         int x = 10;
         /*List<Move> all = new ArrayList<>();
 
