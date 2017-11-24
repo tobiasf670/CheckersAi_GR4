@@ -10,6 +10,7 @@ import enums.Side;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Created by malthe on 11/17/17.
@@ -28,17 +29,30 @@ public class Main
                 Player p2 = BL.getPlayers().get(1);
                 Board board = new Board(p1,p2);
                 board.init();
-                Board testClone = board.clone();
-
                 MoveValidator vm = new MoveValidator();
                 HeuristicCalculator hc = new HeuristicCalculator();
                 AImoveCalculator ai = new AImoveCalculator(vm,hc,BL);
-            //double p4 =    ai.minimax(board,p1,4,true,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY);
-        Move m = null;
-        m = ai.bestMove(testClone,p1);
-        System.out.println("");
-        System.out.println("*************");
-               System.out.println("Det bedste move jeg kan lave er:   "+m);
-               board.print();
+
+        List<Move> getAllMoves = BL.getAllvalideMoves(p1,board);
+        BL.makeMove(board,getAllMoves.get(0),p1.side,p1);
+        board.print();
+        BL.makeMove(board,ai.bestMove(board,p2),p2.side,p2);
+        board.print();
+
+              /*  while(true){
+                    board.print();
+                    System.out.println("Make a move");
+                    List<Move> getAllMoves = BL.getAllvalideMoves(p1,board);
+                    System.out.println(getAllMoves);
+                    Scanner scanner = new Scanner(System.in);
+
+                    int input = scanner.nextInt();
+                    BL.makeMove(board,getAllMoves.get(input),p1.side,p1);
+
+                    Move aiMove = ai.bestMove(board.clone(),p2);
+                    BL.makeMove(board,aiMove,p2.side,p2);
+
+                }
+                */
     }
 }

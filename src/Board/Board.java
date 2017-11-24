@@ -196,9 +196,7 @@ public class Board implements IBoard {
             }
         }
         System.out.println(rowDivider);
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
+
     }
 
     public BoardField getBoardField(Point point) {

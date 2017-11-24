@@ -230,7 +230,7 @@ public class BoardLogic implements IBoardLogic {
             //check if additional "free" jump moves has to be performed
 
             //Let the AI run alphabeta for one additional turn instead
-            //takeFreeJumpMoves(goal, board, s, p);
+            takeFreeJumpMoves(goal, board, s, p);
         }
 
         return true;
@@ -254,15 +254,16 @@ public class BoardLogic implements IBoardLogic {
         int checkerToRemoveX = move.getStartx();
         int checkerToRemoveY = move.getStarty();
         if(moveValidator.isMovingUp(move)) {
-            checkerToRemoveY--;
-        } else {
             checkerToRemoveY++;
+        } else {
+            checkerToRemoveY--;
         }
         if(moveValidator.isMovingRight(move)) {
-            checkerToRemoveX--;
-        } else {
             checkerToRemoveX++;
+        } else {
+            checkerToRemoveX--;
         }
+        System.out.println(checkerToRemoveX+" og "+checkerToRemoveY);
         b.removeChecker(new Point(checkerToRemoveX, checkerToRemoveY));
     }
 }
