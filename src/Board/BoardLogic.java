@@ -10,6 +10,7 @@ import enums.Side;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -28,6 +29,25 @@ public class BoardLogic implements IBoardLogic {
         List<BoardField> playerFields = board.getBoardFields(p);
         for(BoardField boardField : playerFields) {
             moves.addAll(validmoves(boardField, board, p));
+        }
+        return filterForForcedMoves(moves);
+    }
+
+    private List<Move> filterForForcedMoves(List<Move> moves) {
+        boolean hasForCedMoves = false;
+        for(Move move : moves) {
+            if(move.isJumpMove) {
+                hasForCedMoves = true;
+                break;
+            }
+        }
+        if(hasForCedMoves) {
+            Iterator<Move> iterator = moves.iterator();
+            while(iterator.hasNext()) {
+                if(!iterator.next().isJumpMove) {
+                    iterator.remove();
+                }
+            }
         }
         return moves;
     }
@@ -165,7 +185,7 @@ public class BoardLogic implements IBoardLogic {
         int i = 0;
 
         for(BoardField boardField : getAllCheckers(p,b)) {
-            System.out.println(getAllCheckers(p,b).get(i).getBoardPosition());
+
             i++;
             jumpMoves.addAll(getJumpMoves(boardField,b));
         }
@@ -268,7 +288,7 @@ public class BoardLogic implements IBoardLogic {
         } else {
             checkerToRemoveX--;
         }
-        System.out.println(checkerToRemoveX+" og "+checkerToRemoveY);
+
         b.removeChecker(new Point(checkerToRemoveX, checkerToRemoveY));
         b.updateBoardScore(new Point(checkerToRemoveX, checkerToRemoveY));
     }

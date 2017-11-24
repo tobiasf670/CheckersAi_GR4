@@ -41,9 +41,8 @@ public class AImoveCalculator implements IAi {
             Board clone = b.clone();
             boardLogic.makeMove(clone,move,player.side,player);
             //for each possible AI move, calculate the heuristic with minimax
-            heuristicScores.add(minimax(clone, player,4, true, 0.0,0.0));
+            heuristicScores.add(minimax(clone, player,maxSearchDepth, true, 0.0,0.0));
         }
-        System.out.println("size : "+heuristicScores.size());
         double bestHeuristic = 0.0;
         int indexOfBest = 0;
         for(int i = 0; i<heuristicScores.size(); i++){

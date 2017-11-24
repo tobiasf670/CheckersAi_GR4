@@ -43,7 +43,7 @@ public class GameController {
     }
 
     public void gameLoop() {
-        Scanner scanner;
+
         while(true) {
             board.print();
             if(isHumanTurn) {
@@ -56,7 +56,7 @@ public class GameController {
                 boardLogic.makeMove(board,aiMove,Side.BLACK, black);
                 isHumanTurn = true;
             }
-
+            System.out.println("");
         }
     }
 
@@ -74,14 +74,10 @@ public class GameController {
             System.out.println("Invalid input, try again.. ");
             return readUserInput();
         }
+        List<Move> mandatoryMoves = boardLogic.getAllvalideMoves(red,board);
 
-        List<Move> validMoves = boardLogic.validmoves(board.getBoardField(
-                new Point(Integer.parseInt(lineArr[0]+""), Integer.parseInt(lineArr[1]+""))), this.board, this.red);
-
-        for(Move move1 : validMoves) {
-            if(move1.equals(move)) {
-                return move1;
-            }
+        if(mandatoryMoves.contains(move)) {
+            return move;
         }
         System.out.println("Not valid move, try again.. ");
         return readUserInput();
