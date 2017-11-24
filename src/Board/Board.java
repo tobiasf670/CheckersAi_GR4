@@ -190,8 +190,16 @@ public class Board implements IBoard {
         final char[] array = new char[rowLength];
         Arrays.fill(array, '-');
         String rowDivider = new String(array);
+        System.out.print("  ");
+        for(int f = 0; f<8; f++) {
+
+            System.out.print(f+ "  ");
+        }
+        System.out.println("");
+
         for(int i = 0; i < gameBoard.length; i++)
         {
+
             System.out.println(rowDivider);
             for(int j = 0; j < gameBoard[i].length; j++)
             {
