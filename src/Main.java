@@ -23,20 +23,19 @@ public class Main
         List<Move> all = new ArrayList<>();
 
                 BoardLogic BL = new BoardLogic();
-                BL.createPlayer(Side.RED);
-                BL.createPlayer(Side.BLACK);
-                Player p1 = BL.getPlayers().get(0);
-                Player p2 = BL.getPlayers().get(1);
-                Board board = new Board(p1,p2);
+                Player red = new Player(Side.RED);
+                Player black = new Player(Side.BLACK);
+                Board board = new Board(red,black);
                 board.init();
                 MoveValidator vm = new MoveValidator();
                 HeuristicCalculator hc = new HeuristicCalculator();
                 AImoveCalculator ai = new AImoveCalculator(vm,hc,BL);
 
-        List<Move> getAllMoves = BL.getAllvalideMoves(p1,board);
-        BL.makeMove(board,getAllMoves.get(0),p1.side,p1);
+        List<Move> getAllMoves = BL.getAllvalideMoves(red,board);
+        BL.makeMove(board,getAllMoves.get(0),red.side,red);
         board.print();
-        BL.makeMove(board,ai.bestMove(board,p2),p2.side,p2);
+        Move bestMove = ai.bestMove(board,black);
+        BL.makeMove(board,ai.bestMove(board,black),black.side,black);
         board.print();
 
               /*  while(true){

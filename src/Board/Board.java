@@ -155,15 +155,19 @@ public class Board implements IBoard {
     @Override
     public Board clone() {
 
-        BoardField[][] cloneBoard = new BoardField[8][8];
+        /*BoardField[][] cloneBoard = new BoardField[8][8];
 
         for(int i = 0;i<gameBoard.length;i++){
             for (int j =0;j<gameBoard.length;j++){
                 cloneBoard [i][j] = gameBoard[i][j];
             }
-        }
-
-        Board clone = new Board(cloneBoard);
+        }*/
+        BoardField [][] copy = copyGameBoard(this.gameBoard);
+        Board clone = new Board(this.red, this.black,copy);
+        clone.numberOfBlackCheckers = this.numberOfBlackCheckers;
+        clone.numberOfRedCheckers = this.numberOfRedCheckers;
+        clone.numberOfRedKings = this.numberOfRedKings;
+        clone.numberOfBlackKings = this.numberOfBlackKings;
         return clone;
 
     }
@@ -310,5 +314,23 @@ public class Board implements IBoard {
         this.numberOfRedCheckers = 12;
         this.numberOfRedKings = 0;
 
+    }
+
+    public Player getOpponent(Player player) {
+
+        if(red.side == player.side) {
+            return black;
+        }
+        return red;
+
+    }
+    private BoardField[][] copyGameBoard(BoardField[][] gameBoard) {
+        BoardField[][] newBoardField = new BoardField[8][8];
+
+        for(int i=0; i<8; i++)
+            for(int j=0; j<8; j++)
+                newBoardField[i][j]=gameBoard[i][j];
+
+        return newBoardField;
     }
 }

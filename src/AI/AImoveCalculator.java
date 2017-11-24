@@ -75,7 +75,7 @@ public class AImoveCalculator implements IAi {
                 boards = board.clone();
                 boardLogic.makeMove(boards,moveICanMake.get(i),player.side,player);
 
-                double res = minimax(boards,changePlayer(player),searchDepth -1,!maximizingPlayer,alpha,beta);
+                double res = minimax(boards,changePlayer(player, board),searchDepth -1,!maximizingPlayer,alpha,beta);
 
                 v = Math.max(res,v);
                 alpha = Math.max(alpha,v);
@@ -93,7 +93,7 @@ public class AImoveCalculator implements IAi {
             for(int i = 0;i<moveICanMake.size();i++){
                 boards = board.clone();
                 boardLogic.makeMove(boards,moveICanMake.get(i),player.side,player);
-                double res = minimax(boards,changePlayer(player),searchDepth-1,!maximizingPlayer,alpha,beta);
+                double res = minimax(boards,changePlayer(player, board),searchDepth-1,!maximizingPlayer,alpha,beta);
 
                 v = Math.min(res,v);
                 alpha = Math.min(alpha,v);
@@ -108,10 +108,7 @@ public class AImoveCalculator implements IAi {
     }
 
     //Swiches back to player after AI have made a move.
-    public Player changePlayer(Player p){
-        if(boardLogic.getPlayers().get(0).side == p.side)   {
-                    return boardLogic.getPlayers().get(1) ;
-        }
-        return boardLogic.getPlayers().get(0);
+    public Player changePlayer(Player player, Board board){
+        return board.getOpponent(player);
     }
 }
