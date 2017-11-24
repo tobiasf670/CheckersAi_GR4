@@ -220,8 +220,9 @@ public class BoardLogic implements IBoardLogic {
         else{
             type = CheckerType.RED;
         }
-        System.out.println();
+
     //System.out.println("move er lavet"+ m);
+
         board.removeChecker(start);
         board.setBoardField(gx,gy,type,p);
 
@@ -230,7 +231,7 @@ public class BoardLogic implements IBoardLogic {
             //check if additional "free" jump moves has to be performed
 
             //Let the AI run alphabeta for one additional turn instead
-            takeFreeJumpMoves(goal, board, s, p);
+           // takeFreeJumpMoves(goal, board, s, p);
         }
 
         return true;

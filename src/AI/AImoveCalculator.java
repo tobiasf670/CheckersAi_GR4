@@ -43,10 +43,19 @@ public class AImoveCalculator implements IAi {
             //for each possible AI move, calculate the heuristic with minimax
             heuristicScores.add(minimax(clone, player,4, true, 0.0,0.0));
         }
+        System.out.println("size : "+heuristicScores.size());
+        double bestHeuristic = 0.0;
+        int indexOfBest = 0;
+        for(int i = 0; i<heuristicScores.size(); i++){
+            if(heuristicScores.get(i) >= bestHeuristic){
+                indexOfBest = i;
+                bestHeuristic = heuristicScores.get(i);
 
-        double bestScore = Collections.max(heuristicScores);
+            }
+        }
+        //double bestScore = Collections.max(heuristicScores);
 
-        return allValidMoves.get(heuristicScores.indexOf(bestScore));
+        return allValidMoves.get(heuristicScores.indexOf(bestHeuristic));
     }
 
     //MinMax with alpha beta phruning algorithm created.
@@ -55,7 +64,6 @@ public class AImoveCalculator implements IAi {
 
         //Base case : Recursion ends here
         if(searchDepth == 0) {
-
             //return the heuristic score
             return heuristicCalculator.CalculateHeuristic(board, player);
         }
@@ -73,6 +81,7 @@ public class AImoveCalculator implements IAi {
             for(int i = 0;i< moveICanMake.size();i++) {
                
                 boards = board.clone();
+
                 boardLogic.makeMove(boards,moveICanMake.get(i),player.side,player);
 
                 double res = minimax(boards,changePlayer(player, board),searchDepth -1,!maximizingPlayer,alpha,beta);
