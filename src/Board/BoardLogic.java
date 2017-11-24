@@ -34,6 +34,10 @@ public class BoardLogic implements IBoardLogic {
 
     @Override
     public List<Move> validmoves(BoardField boardField, IBoard board, Player player) {
+        List<Move> mandatoryJumpMoves = getJumpMoves(boardField, board);
+        if(!mandatoryJumpMoves.isEmpty()) {
+            return mandatoryJumpMoves;
+        }
         Point startPosition = boardField.boardPosition;
         //Right up
         Move move = new Move(startPosition, new Point(startPosition.x+1, startPosition.y+1),false);
@@ -62,7 +66,7 @@ public class BoardLogic implements IBoardLogic {
                 !isFieldTaken(board,move3))
             validMoves.add(move3);
 
-        validMoves.addAll(getJumpMoves(boardField, board));
+        //validMoves.addAll(getJumpMoves(boardField, board));
 
         return validMoves;
     }
