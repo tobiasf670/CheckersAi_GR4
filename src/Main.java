@@ -1,6 +1,7 @@
 import AI.AImoveCalculator;
 import Board.Board;
 import Board.BoardLogic;
+import Controller.GameController;
 import Heuristics.HeuristicCalculator;
 import Moves.Move;
 import Moves.MoveValidator;
@@ -20,7 +21,11 @@ public class Main
 
 
     public static void main(String[] args) {
-        List<Move> all = new ArrayList<>();
+
+        GameController gameController = new GameController();
+        Move move = gameController.readUserInput();
+        int x = 10;
+        /*List<Move> all = new ArrayList<>();
 
                 BoardLogic BL = new BoardLogic();
                 Player red = new Player(Side.RED);
@@ -47,7 +52,7 @@ public class Main
         //BL.makeMove(board,ai.bestMove(board,black),black.side,black);
         //board.print();
 
-              /*  while(true){
+               while(true){
                     board.print();
                     System.out.println("Make a move");
                     List<Move> getAllMoves = BL.getAllvalideMoves(p1,board);
@@ -62,5 +67,6 @@ public class Main
 
                 }
                 */
+
     }
 }
