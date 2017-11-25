@@ -49,12 +49,15 @@ public class GameController {
             if(isHumanTurn) {
                 Move userMove = readUserInput();
                 boardLogic.makeMove(this.board, userMove, Side.RED, red);
+                if(!userMove.isJumpMove)
                 isHumanTurn = false;
 
             } else {
                 Move aiMove = aImoveCalculator.bestMove(board, black);
                 boardLogic.makeMove(board,aiMove,Side.BLACK, black);
-                isHumanTurn = true;
+                if(!aiMove.isJumpMove)
+                    isHumanTurn = true;
+
             }
             System.out.println("");
         }
@@ -76,9 +79,14 @@ public class GameController {
         }
         List<Move> mandatoryMoves = boardLogic.getAllvalideMoves(red,board);
 
-        if(mandatoryMoves.contains(move)) {
-            return move;
+        for(Move move1 : mandatoryMoves) {
+            if(move1.equals(move)) {
+                return move1;
+            }
         }
+        /*if(mandatoryMoves.contains(move)) {
+            return move;
+        }*/
         System.out.println("Not valid move, try again.. ");
         return readUserInput();
     }

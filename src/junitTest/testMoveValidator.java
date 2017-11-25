@@ -30,6 +30,7 @@ public class testMoveValidator {
         this.black = new Player(Side.BLACK);
         BoardField empty = new BoardField(false);
         BoardField redField = new BoardField(this.red, CheckerType.RED, true);
+        BoardField blackKing = new BoardField(this.black, CheckerType.BLACK_KING, true);
         BoardField redKing = new BoardField(this.red, CheckerType.RED_KING, true);
 
         BoardField[][] gameBoard = new BoardField[][]{
@@ -39,8 +40,8 @@ public class testMoveValidator {
                 { empty, empty, empty, empty, empty, empty, empty, empty},
                 { empty, empty, empty, empty, empty, empty, empty, empty},
                 { empty, empty, empty, empty, empty, empty, empty, empty},
-                { empty, empty, empty, empty, empty, empty, empty, empty},
-                { redField, empty, empty, empty, redField, empty, redField, empty},
+                { empty, redField, empty, empty, empty, empty, empty, empty},
+                { redField, empty, blackKing, empty, redField, empty, redField, empty},
 
         };
 
@@ -74,19 +75,28 @@ public class testMoveValidator {
     @Test
     public void testKingMovement() {
         BoardField king = board.getBoardField(new Point(1,2));
-
+        BoardField blackKing = board.getBoardField(new Point(7,2));
         Move move = new Move(new Point(1,2),new Point(0,1), false);
         Move move1 = new Move(new Point(1,2), new Point(2,3), false);
         Move move2 = new Move(new Point(1,2), new Point(6,6), false);
-
+        Move kingKillMove = new Move(new Point(7,2), new Point(5,0), true);
+        Move kingRegularMove = new Move(new Point(7,2), new Point(6,3), false);
         boolean isValidMove = validator.isValidMove(red, king, move, false);
 
         boolean isAlsoValidMove = validator.isValidMove(red, king,move1, false);
 
         boolean isInvalidMove = validator.isValidMove(red, king, move2, false);
 
+        boolean isValidKillMoveKing = validator.isValidMove(black, blackKing, kingKillMove, true);
+        boolean regularKingMove = validator.isValidMove(black, blackKing, kingRegularMove, false);
         Assert.assertTrue(isValidMove);
         Assert.assertTrue(isAlsoValidMove);
         Assert.assertFalse(isInvalidMove);
+        Assert.assertTrue(isValidKillMoveKing);
+        Assert.assertTrue(regularKingMove);
     }
+
+
+
+
 }

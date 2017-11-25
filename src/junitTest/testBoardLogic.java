@@ -29,8 +29,13 @@ public class testBoardLogic {
         this.boardLogic = new BoardLogic();
         this.black = new Player(Side.BLACK);
         this.red = new Player(Side.RED);
-        this.board = new Board(red, black);
+
+        board = new Board(this.red,black);
         board.init();
+        board.numberOfBlackCheckers = 0;
+        board.numberOfBlackKings = 1;
+        board.numberOfRedCheckers = 3;
+        board.numberOfRedKings = 1;
     }
 
     @Test
@@ -118,7 +123,7 @@ public class testBoardLogic {
 
     }
 
-    @Test
+    /*
     public void testTakeFreeJumpMove() {
 
         Board boardTest = new Board(new Player(Side.RED), new Player(Side.BLACK));
@@ -134,7 +139,7 @@ public class testBoardLogic {
         boardTest.print();
 
 
-    }
+    }*/
 
     @Test
     public void testKingMove() {
@@ -143,5 +148,36 @@ public class testBoardLogic {
         board.getBoardField(new Point(0,2)).checkerType = CheckerType.RED;
         boolean result = boardLogic.isKingMove(toMove,move,red);
         //Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testAllValidMovesContainsKingMoves() {
+
+        BoardField field = board.getBoardField(new Point(7,2));
+        field.checkerType = CheckerType.BLACK_KING;
+        field.owner = black;
+        board.print();
+        List<Move> blackMoves = this.boardLogic.getAllvalideMoves(black, board);
+        Assert.assertTrue(blackMoves.size()==7);
+
+        BoardField field1 = board.getBoardField(new Point(5,0));
+        field1.checkerType = CheckerType.EMPTY;
+        field1.isOccupied = false;
+        //field
+        blackMoves = this.boardLogic.getAllvalideMoves(black, board);
+        Assert.assertTrue(blackMoves.size()==1);
+
+        BoardField field2 = board.getBoardField(new Point(5,4));
+        field2.checkerType = CheckerType.EMPTY;
+        field2.isOccupied = false;
+        blackMoves = this.boardLogic.getAllvalideMoves(black, board);
+        Assert.assertTrue(blackMoves.size()==2);
+
+        boardLogic.makeMove(board, new Move(new Point(7,2), new Point(5,4),true),Side.BLACK, black);
+        boardLogic.makeMove(board, new Move(new Point(5,4), new Point(4,3),false),Side.BLACK, black);
+        board.print();
+        //boardLogic.makeMove(board, new Move(new Point(7,2), new Point(5,0),true),Side.BLACK, black);
+
+        int x = 10;
     }
 }
