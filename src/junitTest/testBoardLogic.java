@@ -135,4 +135,13 @@ public class testBoardLogic {
 
 
     }
+
+    @Test
+    public void testKingMove() {
+        BoardField toMove = board.getBoardField(new Point(7,0));
+        Move move = new Move(new Point(7,0), new Point(2,0), false);
+        board.getBoardField(new Point(0,2)).checkerType = CheckerType.RED;
+        boolean result = boardLogic.isKingMove(toMove,move,red);
+        //Assert.assertTrue(result);
+    }
 }

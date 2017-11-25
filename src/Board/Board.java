@@ -175,15 +175,6 @@ public class Board implements IBoard {
     //Virker fint, Printer ikke korrekt.
     @Override
     public void print() {
-        /*
-        for(int i = 0; i< gameBoard.length;i++){
-            System.out.println("");
-            for(int j = 0; j< gameBoard.length;j++){
-                System.out.print(" "+gameBoard[i][j].checkerType);
-
-
-            }
-        }*/
 
         int cellSize = 2;
         int rowLength = boardYsize * cellSize + boardXsize + 1;

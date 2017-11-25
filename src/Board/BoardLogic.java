@@ -166,10 +166,6 @@ public class BoardLogic implements IBoardLogic {
         }
 
 
-
-
-
-
         return jumpMoves;
 
     }
@@ -237,18 +233,23 @@ public class BoardLogic implements IBoardLogic {
         Point start = new Point(sx,sy);
         Point goal = new Point(gx,gy);
 
-        CheckerType type ;
-        if(s == Side.BLACK){
+        BoardField startField = board.getBoardField(start);
+        /*if(s == Side.BLACK){
             type = CheckerType.BLACK;
         }
         else{
             type = CheckerType.RED;
-        }
+        }*/
 
-    //System.out.println("move er lavet"+ m);
-
+        CheckerType type = startField.checkerType;
         board.removeChecker(start);
         board.setBoardField(gx,gy,type,p);
+        BoardField goalField = board.getBoardField(goal);
+        boolean isKingMove = isKingMove(goalField, m, p);
+        System.out.println("iskingMove = "+isKingMove);
+        if(isKingMove(goalField, m, p)) {
+            promoteToKing(board, goalField);
+        }
 
         if(m.isJumpMove) {
             removeEnemyPiece(m, p, board);
@@ -261,7 +262,15 @@ public class BoardLogic implements IBoardLogic {
         return true;
     }
 
-    private void takeFreeJumpMoves(Point position, Board board, Side side, Player player) {
+    public void promoteToKing(Board board, BoardField boardField) {
+        if(boardField.owner.side == Side.RED) {
+            boardField.checkerType = CheckerType.RED_KING;
+        } else {
+            boardField.checkerType = CheckerType.BLACK_KING;
+        }
+    }
+
+    /*private void takeFreeJumpMoves(Point position, Board board, Side side, Player player) {
         BoardField start = board.getBoardField(new Point(position.x,position.y));
         List<Move> jumpMoves = getJumpMoves(start,board);
 
@@ -271,7 +280,7 @@ public class BoardLogic implements IBoardLogic {
                 break;
             }
         }
-    }
+    }*/
 
 
 
@@ -291,5 +300,21 @@ public class BoardLogic implements IBoardLogic {
 
         b.removeChecker(new Point(checkerToRemoveX, checkerToRemoveY));
         b.updateBoardScore(new Point(checkerToRemoveX, checkerToRemoveY));
+    }
+
+    public boolean isKingMove(BoardField field, Move move, Player player) {
+        if(field.checkerType == CheckerType.BLACK || field.checkerType == CheckerType.RED) {
+            if(player.side == Side.RED) {
+                if(move.getGoalx() == 0) {
+                    return true;
+                }
+            } else if(player.side == Side.BLACK) {
+                if(move.getGoalx() == 7) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
