@@ -50,7 +50,8 @@ public class Move {
 
     @Override
     public String toString() {
-    return "start: "+startx+", "+starty+" End: "+goalx+" , "+goaly;
+
+        return "{"+startx+","+starty+"} to {"+goalx+","+goaly+"}";
     }
 
     @Override

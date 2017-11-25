@@ -43,18 +43,26 @@ public class GameController {
     }
 
     public void gameLoop() {
-
+        String aiMoveMsg ="";
         while(true) {
             board.print();
+            if(aiMoveMsg.length()>1) {
+                System.out.println(aiMoveMsg);
+            }
             if(isHumanTurn) {
                 Move userMove = readUserInput();
                 boardLogic.makeMove(this.board, userMove, Side.RED, red);
-                if(!userMove.isJumpMove)
-                isHumanTurn = false;
+                if(userMove.isJumpMove && boardLogic.getJumpMoves(board,red).size()>0) {
+                    isHumanTurn = true;
+                } else {
+                    isHumanTurn = false;
+                }
+
 
             } else {
                 Move aiMove = aImoveCalculator.bestMove(board, black);
                 boardLogic.makeMove(board,aiMove,Side.BLACK, black);
+                aiMoveMsg = "Last turn the AI moved "+aiMove;
                 if(!aiMove.isJumpMove)
                     isHumanTurn = true;
 
@@ -64,6 +72,15 @@ public class GameController {
     }
 
     public Move readUserInput() {
+
+        List<Move> mandatoryMoves = boardLogic.getAllvalideMoves(red,board);
+        System.out.print("Mandatory Moves : ");
+        for(Move move2 : mandatoryMoves) {
+            if(move2.isJumpMove) {
+                System.out.print(move2+ " ");
+            }
+        }
+        System.out.println("");
         System.out.println("Enter your move : ");
         Scanner scanner = new Scanner(System.in);
         String line = scanner.nextLine();
@@ -77,7 +94,7 @@ public class GameController {
             System.out.println("Invalid input, try again.. ");
             return readUserInput();
         }
-        List<Move> mandatoryMoves = boardLogic.getAllvalideMoves(red,board);
+
 
         for(Move move1 : mandatoryMoves) {
             if(move1.equals(move)) {

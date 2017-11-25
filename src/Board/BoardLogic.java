@@ -245,8 +245,7 @@ public class BoardLogic implements IBoardLogic {
         board.removeChecker(start);
         board.setBoardField(gx,gy,type,p);
         BoardField goalField = board.getBoardField(goal);
-        boolean isKingMove = isKingMove(goalField, m, p);
-        System.out.println("iskingMove = "+isKingMove);
+        
         if(isKingMove(goalField, m, p)) {
             promoteToKing(board, goalField);
         }
