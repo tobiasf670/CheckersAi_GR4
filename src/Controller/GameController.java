@@ -44,10 +44,13 @@ public class GameController {
 
     public void gameLoop() {
         String aiMoveMsg ="";
+        String aiMoveTime ="";
         while(true) {
             board.print();
             if(aiMoveMsg.length()>1) {
                 System.out.println(aiMoveMsg);
+                System.out.println(aiMoveTime);
+
             }
             if(isHumanTurn) {
                 Move userMove = readUserInput();
@@ -60,9 +63,13 @@ public class GameController {
 
 
             } else {
+                long startTime = System.nanoTime();
                 Move aiMove = aImoveCalculator.bestMove(board, black);
                 boardLogic.makeMove(board,aiMove,Side.BLACK, black);
-                aiMoveMsg = "Last turn the AI moved "+aiMove;
+                long endTime = System.nanoTime();
+                long duration = (endTime - startTime)/1000000;
+                aiMoveMsg = "Last turn the AI moved "+aiMove ;
+                aiMoveTime = "Turn took : "+ duration +" milliseconds";
                 if(!aiMove.isJumpMove)
                     isHumanTurn = true;
 
@@ -85,11 +92,16 @@ public class GameController {
         Scanner scanner = new Scanner(System.in);
         String line = scanner.nextLine();
         char[] lineArr = line.toCharArray();
+        System.out.println(lineArr[0]);
+        System.out.println(lineArr[1]);
+        System.out.println(lineArr[2]);
+        System.out.println(lineArr[3]);
         Move move;
         try{
             move = new Move(new Point(Integer.parseInt(lineArr[0]+""),Integer.parseInt(lineArr[1]+"")),
                     new Point(Integer.parseInt(lineArr[2]+""),Integer.parseInt(lineArr[3]+"")), false);
 
+        System.out.println(move);
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Invalid input, try again.. ");
             return readUserInput();
