@@ -126,16 +126,16 @@ public class testBoardLogic {
     /*
     public void testTakeFreeJumpMove() {
 
-        Board boardTest = new Board(new Player(Side.RED), new Player(Side.BLACK));
+        Board boardTest = new Board(new Player(Side.WHITE), new Player(Side.BLACK));
         boardTest.init();
         //boardTest.print();
-        boardTest.setBoardField(4,3, CheckerType.BLACK, new Player(Side.RED));
+        boardTest.setBoardField(4,3, CheckerType.BLACK, new Player(Side.WHITE));
         boardTest.setBoardField(1,0, CheckerType.EMPTY, null);
         boardTest.getBoardField(new Point(1,0)).isOccupied = false;
         boardTest.print();
         Move move = new Move(new Point(5,4), new Point(3,2), true);
         //BoardField field = board.getBoardField(new Point(3,4));
-        boardLogic.makeMove(boardTest, move, Side.RED, new Player(Side.RED));
+        boardLogic.makeMove(boardTest, move, Side.WHITE, new Player(Side.WHITE));
         boardTest.print();
 
 

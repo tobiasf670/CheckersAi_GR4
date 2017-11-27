@@ -2,6 +2,7 @@ import AI.AImoveCalculator;
 import Board.Board;
 import Board.BoardLogic;
 import Controller.GameController;
+import GUI.CheckersApp;
 import Heuristics.HeuristicCalculator;
 import Moves.Move;
 import Moves.MoveValidator;
@@ -21,6 +22,8 @@ public class Main
 
 
     public static void main(String[] args) {
+        CheckersApp GUI = new CheckersApp();
+        GUI.launch(CheckersApp.class,args);
 
         GameController gameController = new GameController();
         gameController.gameLoop();
@@ -28,7 +31,7 @@ public class Main
         /*List<Move> all = new ArrayList<>();
 
                 BoardLogic BL = new BoardLogic();
-                Player red = new Player(Side.RED);
+                Player red = new Player(Side.WHITE);
                 Player black = new Player(Side.BLACK);
                 Board board = new Board(red,black);
                 board.init();

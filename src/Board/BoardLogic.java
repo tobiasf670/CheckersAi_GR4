@@ -238,7 +238,7 @@ public class BoardLogic implements IBoardLogic {
             type = CheckerType.BLACK;
         }
         else{
-            type = CheckerType.RED;
+            type = CheckerType.WHITE;
         }*/
 
         CheckerType type = startField.checkerType;
