@@ -137,10 +137,12 @@ public class CheckersApp extends Application {
             }
             return new MoveResult(MoveType.NORMAL);
         } else if (Math.abs(newX - x0) == 2 && newY - y0 == piece.getType().moveDir * 2) {
-
+        System.out.println("JaAAA");
             int x1 = x0 + (newX - x0) / 2;
             int y1 = y0 + (newY - y0) / 2;
-
+            System.out.println(x0+" an0d " +y0);
+            System.out.println(x1+" a1nd " +y1);
+        System.out.println("ggsadkasldjasl"+board[x1][y1].hasPiece());
             if (board[x1][y1].hasPiece() && board[x1][y1].getPiece().getType() != piece.getType()) {
                 if(piece.getType() == PieceType.BLACK && board[x1][y1].getPiece().getType() != PieceType.KINGBLACK
                         || piece.getType() == PieceType.WHITE && board[x1][y1].getPiece().getType() != PieceType.KINGWHITE)
@@ -282,6 +284,10 @@ public class CheckersApp extends Application {
                         human = new Move(new Point(y0,x0),new Point(newY,newX),false);
                         bl.makeMove(boardAI,human, playerHuman.side, playerHuman);
                         boardAI.removeChecker(new Point(toBoard(otherPiece.getOldY()),toBoard(otherPiece.getOldX())));
+                        if(!jumpMore(newX,newY,piece)){
+                            AIMove();
+                        }
+
                         AIMove();
                         break;
                 }
@@ -347,6 +353,12 @@ public class CheckersApp extends Application {
                         bl.makeMove(boardAI,human, playerHuman.side, playerHuman);
                         boardAI.removeChecker(new Point(toBoard(otherPiece.getOldY()),toBoard(otherPiece.getOldX())));
                         AIMove();
+                        //if(!jumpMore(newX+2,newY+2,piece)){
+                          //  if(!jumpMore(newX-2,newY+2,piece)){
+                            //    AIMove();
+                           // }
+                        //}
+
                         break;
                 }
             });
@@ -387,10 +399,95 @@ public class CheckersApp extends Application {
             board[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
             pieceGroup.getChildren().remove(otherPiece);
             bl.makeMove(boardAI,aiMove, playerAI.side, playerAI);
+           // System.out.println("skal du have en til jump"+jumpMore(aiNewX,aiNewY,pice));
+          //  if(!jumpMore(aiNewX+2,aiNewY+2,pice)){
+            //    if(!jumpMore(aiNewX-2,aiNewY+2,pice)){
 
+              //  }
+                //else if(jumpMore(aiNewX+2,aiNewY+2,pice)) {
+                  //  AIMove();
+                //}
+            //}else if(jumpMore(aiNewX-2,aiNewY+2,pice)) {
+              //  AIMove();
+           // }
 
         }
 
         boardAI.print();
+    }
+
+    public boolean exJump(int x, int y,Piece p){
+       int xMinus = 0;
+       int xPlus = 6;
+       int yMinus = 0;
+        int yPlus = 6;
+        PieceType king = PieceType.KINGWHITE;
+        if(p.getType() != PieceType.WHITE){
+            king = PieceType.KINGBLACK;
+        }
+        if(x != 0 ){
+           xMinus = x-1;
+        }
+        if(x!= 7){
+            xPlus = x+1;
+        }
+        if(y != 0 ){
+            yMinus = x-1;
+        }
+        if(y!= 7){
+            yPlus = x+1;
+        }
+        PieceType backLeftEmpty,backRightEmpty,forwardRightEmpty,forwardLeftEmpty;
+        PieceType backLeft = board[xMinus][yMinus].getPiece().getType();
+        if(xMinus >0 && yMinus >0){
+            backLeftEmpty = board[xMinus-1][yMinus-1].getPiece().getType();
+        }
+        PieceType backRight = board[xPlus][yMinus].getPiece().getType();
+        if(xPlus <7 && yMinus >0){
+             backRightEmpty = board[xPlus+1][yMinus-1].getPiece().getType();
+        }
+        PieceType forwardRight = board[xPlus][yPlus].getPiece().getType();
+        if(xPlus <7 && yPlus <7){
+            forwardRightEmpty = board[xPlus+1][xPlus+1].getPiece().getType();
+        }
+        PieceType forwardLeft = board[xMinus][yPlus].getPiece().getType();
+        if(xMinus >0 && yPlus <7){
+             forwardLeftEmpty = board[xMinus-1][yPlus+1].getPiece().getType();
+        }
+
+        if(backLeft != p.getType()  && backLeft != king  ){
+
+        }
+return true;
+    }
+
+    boolean jumpMore(int newX, int newY, Piece p) {
+        boolean res = false;
+        if(newX>8 || newY >8){
+            return false;
+        }
+        if (board[newX][newY].hasPiece() || (newX + newY) % 2 == 0) {
+            res= false;
+        }
+
+        PieceType king = PieceType.KINGWHITE;
+        if(p.getType() != PieceType.WHITE){
+            king = PieceType.KINGBLACK;
+        }
+
+        int x0 = toBoard(p.getOldX());
+        int y0 = toBoard(p.getOldY());
+
+        if (Math.abs(newX - x0) == 2 && (newY - y0 == 1 * 2 || newY - y0 == -1 * 2)) {
+
+            int x1 = x0 + (newX - x0) / 2;
+            int y1 = y0 + (newY - y0) / 2;
+            System.out.println(x1 + " and " + y1);
+            System.out.println("ggsadkasldjasl" + board[x1][y1].hasPiece());
+            if (board[x1][y1].hasPiece() && board[x1][y1].getPiece().getType() != p.getType() && board[x1][y1].getPiece().getType() != king){
+                res = true;
+            }
+        }
+        return res;
     }
 }
