@@ -3,7 +3,6 @@ package GUI;
 import AI.AImoveCalculator;
 import Board.Board;
 import Board.BoardLogic;
-import Controller.GameController;
 import Heuristics.HeuristicCalculator;
 import Moves.Move;
 import Moves.MoveValidator;
@@ -38,8 +37,8 @@ public class CheckersApp extends Application {
     Boolean booleanAI = false; // false black, true white
     AImoveCalculator ai ;
     Board boardAI ;
-    Player playerAI ;
     Player playerHuman;
+    Player playerAI;
     BoardLogic bl;
 
     private Parent createContent() {
@@ -71,15 +70,15 @@ public class CheckersApp extends Application {
             booleanPlayer1 = true;
             booleanAI = false;
             System.out.println("Du er spiller 1");
-            playerAI = red;
-            playerHuman = black;
+            playerHuman = red;
+            playerAI = black;
         }
         if (result.isPresent() && result.get() == player2) {
             booleanPlayer1 = false;
             booleanAI = true ;
             System.out.println("Du er spiller 2");
-            playerAI = black;
-            playerHuman = red;
+            playerHuman = black;
+            playerAI = red;
         }
 
 
@@ -146,6 +145,14 @@ public class CheckersApp extends Application {
                 if(piece.getType() == PieceType.BLACK && board[x1][y1].getPiece().getType() != PieceType.KINGBLACK
                         || piece.getType() == PieceType.WHITE && board[x1][y1].getPiece().getType() != PieceType.KINGWHITE)
                 {
+                    if(newY == 0 && piece.getType() == PieceType.BLACK){
+                        piece.setType(PieceType.KINGBLACK);
+                        piece.changeColor(Color.valueOf("#e8ef09"));
+                    }
+                    if(newY == 7 && piece.getType() == PieceType.WHITE){
+                        piece.setType(PieceType.KINGWHITE);
+                        piece.changeColor(Color.valueOf("#0c1d8c"));
+                    }
                     return new MoveResult(MoveType.KILL, board[x1][y1].getPiece());
                 }
 
@@ -161,6 +168,14 @@ public class CheckersApp extends Application {
             int y1 = y0 + (newY - y0) / 2;
 
             if (board[x1][y1].hasPiece() && board[x1][y1].getPiece().getType() != PieceType.WHITE &&  piece.getType() == PieceType.KINGWHITE) {
+                if(newY == 0 && piece.getType() == PieceType.BLACK){
+                    piece.setType(PieceType.KINGBLACK);
+                    piece.changeColor(Color.valueOf("#e8ef09"));
+                }
+                if(newY == 7 && piece.getType() == PieceType.WHITE){
+                    piece.setType(PieceType.KINGWHITE);
+                    piece.changeColor(Color.valueOf("#0c1d8c"));
+                }
                 return new MoveResult(MoveType.KILL, board[x1][y1].getPiece());
             }
 
@@ -174,6 +189,14 @@ public class CheckersApp extends Application {
             int y1 = y0 + (newY - y0) / 2;
 
             if (board[x1][y1].hasPiece() && board[x1][y1].getPiece().getType() != PieceType.BLACK) {
+                if(newY == 0 && piece.getType() == PieceType.BLACK){
+                    piece.setType(PieceType.KINGBLACK);
+                    piece.changeColor(Color.valueOf("#e8ef09"));
+                }
+                if(newY == 7 && piece.getType() == PieceType.WHITE){
+                    piece.setType(PieceType.KINGWHITE);
+                    piece.changeColor(Color.valueOf("#0c1d8c"));
+                }
                 return new MoveResult(MoveType.KILL, board[x1][y1].getPiece());
             }
 
@@ -192,6 +215,9 @@ public class CheckersApp extends Application {
         primaryStage.setTitle("CheckersApp");
         primaryStage.setScene(scene);
         primaryStage.show();
+        if(!booleanPlayer1){
+            AIMove();
+        }
     }
 
     private Piece makePiece(PieceType type, int x, int y) {
@@ -216,42 +242,34 @@ public class CheckersApp extends Application {
 
                 int x0 = toBoard(piece.getOldX());
                 int y0 = toBoard(piece.getOldY());
-
+                Move human = null;
                 switch (result.getType()) {
                     case NONE:
                         piece.abortMove();
                         break;
                     case NORMAL:
-                        System.out.println(newX+" humanog Y"+newY);
                         piece.move(newX, newY);
                         board[x0][y0].setPiece(null);
                         board[newX][newY].setPiece(piece);
-                        Move human = new Move(new Point(y0,x0),new Point(newY,newX),false);
-                        bl.makeMove(boardAI,human,playerAI.side,playerAI);
-                        Move aiMove =ai.bestMove(boardAI,playerHuman);
-                        int aiX0 = aiMove.getStarty();
-                        int aiY0 = aiMove.getStartx();
-                        int aiNewX = aiMove.getGoaly();
-                        int aiNewY = aiMove.getGoalx();
-                        System.out.println("sq vi igang");
-                        MoveResult noob;
-                        noob = tryMove(board[aiX0][aiY0].getPiece(),aiNewX,aiNewY);
-                        board[aiX0][aiY0].getPiece().move(aiNewX,aiNewY);
-                        bl.makeMove(boardAI,aiMove,playerHuman.side,playerHuman);
-                        System.out.println(aiX0+" og Y"+aiY0);
-                        System.out.println(board[aiX0][aiY0].getPiece().getType().name());
-                        System.out.println(aiNewX+" og Y"+aiNewY);
-                        System.out.println(noob.getType());
+                        human = new Move(new Point(y0,x0),new Point(newY,newX),false);
+                        bl.makeMove(boardAI,human, playerHuman.side, playerHuman);
+                        AIMove();
                         break;
                     case KING_WHITE:
                         piece.move(newX, newY);
                         board[x0][y0].setPiece(null);
                         board[newX][newY].setPiece(piece);
+                        human = new Move(new Point(y0,x0),new Point(newY,newX),false);
+                        bl.makeMove(boardAI,human, playerHuman.side, playerHuman);
+                        AIMove();
                         break;
                     case KING_BLACK:
                         piece.move(newX, newY);
                         board[x0][y0].setPiece(null);
                         board[newX][newY].setPiece(piece);
+                        human = new Move(new Point(y0,x0),new Point(newY,newX),false);
+                        bl.makeMove(boardAI,human, playerHuman.side, playerHuman);
+                        AIMove();
                         break;
                     case KILL:
                         piece.move(newX, newY);
@@ -261,6 +279,10 @@ public class CheckersApp extends Application {
                         Piece otherPiece = result.getPiece();
                         board[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
                         pieceGroup.getChildren().remove(otherPiece);
+                        human = new Move(new Point(y0,x0),new Point(newY,newX),false);
+                        bl.makeMove(boardAI,human, playerHuman.side, playerHuman);
+                        boardAI.removeChecker(new Point(toBoard(otherPiece.getOldY()),toBoard(otherPiece.getOldX())));
+                        AIMove();
                         break;
                 }
             });
@@ -284,7 +306,7 @@ public class CheckersApp extends Application {
 
                 int x0 = toBoard(piece.getOldX());
                 int y0 = toBoard(piece.getOldY());
-
+                Move human = null;
                 switch (result.getType()) {
                     case NONE:
                         piece.abortMove();
@@ -293,16 +315,25 @@ public class CheckersApp extends Application {
                         piece.move(newX, newY);
                         board[x0][y0].setPiece(null);
                         board[newX][newY].setPiece(piece);
+                        human = new Move(new Point(y0,x0),new Point(newY,newX),false);
+                        bl.makeMove(boardAI,human, playerHuman.side, playerHuman);
+                        AIMove();
                         break;
                     case KING_WHITE:
                         piece.move(newX, newY);
                         board[x0][y0].setPiece(null);
                         board[newX][newY].setPiece(piece);
+                        human = new Move(new Point(y0,x0),new Point(newY,newX),false);
+                        bl.makeMove(boardAI,human, playerHuman.side, playerHuman);
+                        AIMove();
                         break;
                     case KING_BLACK:
                         piece.move(newX, newY);
                         board[x0][y0].setPiece(null);
                         board[newX][newY].setPiece(piece);
+                        human = new Move(new Point(y0,x0),new Point(newY,newX),false);
+                        bl.makeMove(boardAI,human, playerHuman.side, playerHuman);
+                        AIMove();
                         break;
                     case KILL:
                         piece.move(newX, newY);
@@ -312,6 +343,10 @@ public class CheckersApp extends Application {
                         Piece otherPiece = result.getPiece();
                         board[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
                         pieceGroup.getChildren().remove(otherPiece);
+                        human = new Move(new Point(y0,x0),new Point(newY,newX),false);
+                        bl.makeMove(boardAI,human, playerHuman.side, playerHuman);
+                        boardAI.removeChecker(new Point(toBoard(otherPiece.getOldY()),toBoard(otherPiece.getOldX())));
+                        AIMove();
                         break;
                 }
             });
@@ -322,5 +357,40 @@ public class CheckersApp extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public void AIMove(){
+
+        Move aiMove =ai.bestMove(boardAI, playerAI);
+        System.out.println("ai move"+aiMove);
+        int aiX0 = aiMove.getStarty();
+        int aiY0 = aiMove.getStartx();
+        int aiNewX = aiMove.getGoaly();
+        int aiNewY = aiMove.getGoalx();
+        Piece pice = board[aiX0][aiY0].getPiece();
+  //      System.out.println(aiX0+" og " + aiY0);
+//        System.out.println(board[aiX0][aiY0].getPiece().getType());
+        MoveResult moveRes = tryMove(board[aiX0][aiY0].getPiece(),aiNewX,aiNewY);
+        if(moveRes.getType() == MoveType.NORMAL || moveRes.getType() == MoveType.KING_BLACK || moveRes.getType() == MoveType.KING_WHITE){
+            pice.move(aiNewX,aiNewY);
+            board[aiX0][aiY0].setPiece(null);
+            board[aiNewX][aiNewY].setPiece(pice);
+
+            bl.makeMove(boardAI,aiMove, playerAI.side, playerAI);
+        }
+        if(moveRes.getType() == MoveType.KILL){
+
+            pice.move(aiNewX, aiNewY);
+            board[aiX0][aiY0].setPiece(null);
+            board[aiNewX][aiNewY].setPiece(pice);
+            Piece otherPiece = moveRes.getPiece();
+            board[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
+            pieceGroup.getChildren().remove(otherPiece);
+            bl.makeMove(boardAI,aiMove, playerAI.side, playerAI);
+
+
+        }
+
+        boardAI.print();
     }
 }

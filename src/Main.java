@@ -25,9 +25,9 @@ public class Main
         CheckersApp GUI = new CheckersApp();
         GUI.launch(CheckersApp.class,args);
 
-        GameController gameController = new GameController();
-        gameController.gameLoop();
-        int x = 10;
+        //GameController gameController = new GameController();
+        //gameController.gameLoop();
+        //int x = 10;
         /*List<Move> all = new ArrayList<>();
 
                 BoardLogic BL = new BoardLogic();

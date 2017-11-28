@@ -54,7 +54,13 @@ public class AImoveCalculator implements IAi {
         }
         //double bestScore = Collections.max(heuristicScores);
 
-        return allValidMoves.get(heuristicScores.indexOf(bestHeuristic));
+        if(heuristicScores.indexOf(bestHeuristic) == -1){
+            return allValidMoves.get(0);
+        }
+        else{
+            return allValidMoves.get(heuristicScores.indexOf(bestHeuristic));
+        }
+        //return allValidMoves.get(heuristicScores.indexOf(bestHeuristic));
     }
 
     //MinMax with alpha beta phruning algorithm created.
