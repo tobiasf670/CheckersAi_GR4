@@ -107,7 +107,7 @@ public class BoardLogic implements IBoardLogic {
         return true;
     }
 
-    private List<Move> getJumpMoves(BoardField boardField, IBoard board) {
+    public List<Move> getJumpMoves(BoardField boardField, IBoard board) {
         List<Move> jumpMoves = new ArrayList<>();
 
         Point startPosition = boardField.boardPosition;
