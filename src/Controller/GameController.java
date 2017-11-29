@@ -8,6 +8,9 @@ import Moves.MoveValidator;
 import Player.Player;
 import enums.Side;
 import Moves.Move;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import java.awt.*;
@@ -26,6 +29,8 @@ public class GameController {
     private BoardLogic boardLogic;
     private HeuristicCalculator heuristicCalculator;
     private boolean isHumanTurn;
+    private boolean doubleAIturn;
+    private List<Move> possibleJumpMoves;
 
     public GameController() {
 
@@ -38,7 +43,7 @@ public class GameController {
         this.boardLogic = new BoardLogic();
         this.aImoveCalculator = new AImoveCalculator(moveValidator, heuristicCalculator, this.boardLogic);
         isHumanTurn = true;
-
+        doubleAIturn = false;
 
     }
 
@@ -60,11 +65,23 @@ public class GameController {
 
 
             } else {
-                Move aiMove = aImoveCalculator.bestMove(board, black);
+                Move aiMove;
+                if(!doubleAIturn) {
+                    aiMove = aImoveCalculator.bestMove(board, black);
+                } else {
+                    aiMove = aImoveCalculator.bestMoveForForced(board,black,possibleJumpMoves);
+                }
                 boardLogic.makeMove(board,aiMove,Side.BLACK, black);
                 aiMoveMsg = "Last turn the AI moved "+aiMove;
-                if(!aiMove.isJumpMove)
+                this.possibleJumpMoves = canDoubleJump(aiMove.getGoalx(),aiMove.getGoaly(),board, black);
+                if(aiMove.isJumpMove && possibleJumpMoves.size() >0) {
+                    isHumanTurn = false;
+                    doubleAIturn = true;
+                } else {
+                    doubleAIturn = false;
                     isHumanTurn = true;
+                }
+
 
             }
             System.out.println("");
@@ -107,6 +124,30 @@ public class GameController {
         System.out.println("Not valid move, try again.. ");
         return readUserInput();
     }
+
+    private List<Move> canDoubleJump(int x, int y, Board board, Player player) {
+        List<Move> result = new ArrayList<>();
+        List<Move> jumpMoves = boardLogic.getJumpMoves(board, player);
+
+        for(Move move : jumpMoves) {
+            if(move.getStartx() == x && move.getStarty() == move.getStarty()) {
+                result.add(move);
+            }
+        }
+        return result;
+    }
+
+    /*private void filter(List<Move> moves) {
+        Iterator<Move> iterator = moves.iterator();
+
+        while(iterator.hasNext()) {
+            Move move = iterator.next();
+            if(move.getStartx() != lastMove.getGoalx() && move.getStarty() != lastMove.getGoaly()) {
+                iterator.remove();
+            }
+
+        }
+    }*/
 
 
 }

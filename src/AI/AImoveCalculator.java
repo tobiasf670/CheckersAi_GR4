@@ -7,6 +7,7 @@ import enums.Side;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import static java.util.Collections.max;
@@ -20,6 +21,8 @@ public class AImoveCalculator implements IAi {
     IMoveValidator moveValidator;
     IHeuristicCalculator heuristicCalculator;
     IBoardLogic boardLogic;
+    Move lastMove;
+    boolean isPreviousMoveJumpMove;
 
     private static final int maxSearchDepth = 8;
 
@@ -36,6 +39,33 @@ public class AImoveCalculator implements IAi {
     public Move bestMove(IBoard b, Player player) {
         List<Double> heuristicScores = new ArrayList<>();
         List<Move> allValidMoves = boardLogic.getAllvalideMoves(player,b);
+        if(isPreviousMoveJumpMove) {
+            filter(allValidMoves);
+        }
+
+        for(Move move : allValidMoves) {
+            Board clone = b.clone();
+            boardLogic.makeMove(clone,move,player.side,player);
+            //for each possible AI move, calculate the heuristic with minimax
+            heuristicScores.add(minimax(clone, player,maxSearchDepth, true, 0.0,0.0));
+        }
+        double bestHeuristic = 0.0;
+        int indexOfBest = 0;
+        for(int i = 0; i<heuristicScores.size(); i++){
+            if(heuristicScores.get(i) >= bestHeuristic){
+                indexOfBest = i;
+                bestHeuristic = heuristicScores.get(i);
+
+            }
+        }
+        //double bestScore = Collections.max(heuristicScores);
+
+        return allValidMoves.get(heuristicScores.indexOf(bestHeuristic));
+    }
+
+    public Move bestMoveForForced(IBoard b, Player player, List<Move> allValidMoves) {
+        List<Double> heuristicScores = new ArrayList<>();
+
 
         for(Move move : allValidMoves) {
             Board clone = b.clone();
@@ -118,5 +148,17 @@ public class AImoveCalculator implements IAi {
     //Swiches back to player after AI have made a move.
     public Player changePlayer(Player player, Board board){
         return board.getOpponent(player);
+    }
+
+    private void filter(List<Move> moves) {
+        Iterator<Move> iterator = moves.iterator();
+
+        while(iterator.hasNext()) {
+            Move move = iterator.next();
+            if(move.getStartx() != lastMove.getGoalx() && move.getStarty() != lastMove.getGoaly()) {
+                iterator.remove();
+            }
+
+        }
     }
 }
