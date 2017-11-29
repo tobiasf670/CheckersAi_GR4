@@ -1,6 +1,5 @@
 package Interfaces;
 import Moves.Move;
-import enums.CheckerType;
 import Player.Player;
 import Board.Board;
 import Board.BoardField;

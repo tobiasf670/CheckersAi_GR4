@@ -10,6 +10,8 @@ public class Tile extends Rectangle {
 
     private Piece piece;
 
+    boolean light;
+
     public boolean hasPiece() {
         return piece != null;
     }
@@ -23,6 +25,7 @@ public class Tile extends Rectangle {
     }
 
     public Tile(boolean light, int x, int y) {
+        this.light = light;
         setWidth(CheckersApp.TILE_SIZE);
         setHeight(CheckersApp.TILE_SIZE);
 
@@ -30,4 +33,13 @@ public class Tile extends Rectangle {
 
         setFill(light ? Color.valueOf("#feb") : Color.valueOf("#582"));
     }
+
+    public void setColor(Color color){
+
+        setFill(color);
+    }
+    public boolean getlight(){
+    return  light;
+    }
+
 }
