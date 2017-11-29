@@ -43,7 +43,7 @@ public class AImoveCalculator implements IAi {
             //for each possible AI move, calculate the heuristic with minimax
             heuristicScores.add(minimax(clone, player,maxSearchDepth, true, 0.0,0.0));
         }
-        double bestHeuristic = 0.0;
+        double bestHeuristic = Double.NEGATIVE_INFINITY;
         int indexOfBest = 0;
         for(int i = 0; i<heuristicScores.size(); i++){
             if(heuristicScores.get(i) >= bestHeuristic){
@@ -52,15 +52,8 @@ public class AImoveCalculator implements IAi {
 
             }
         }
-        //double bestScore = Collections.max(heuristicScores);
 
-        if(heuristicScores.indexOf(bestHeuristic) == -1){
-            return allValidMoves.get(0);
-        }
-        else{
-            return allValidMoves.get(heuristicScores.indexOf(bestHeuristic));
-        }
-        //return allValidMoves.get(heuristicScores.indexOf(bestHeuristic));
+        return allValidMoves.get(heuristicScores.indexOf(bestHeuristic));
     }
 
     //MinMax with alpha beta phruning algorithm created.
