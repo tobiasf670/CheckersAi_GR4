@@ -43,7 +43,7 @@ public class AImoveCalculator implements IAi {
             boardLogic.makeMove(clone,move,player.side,player);
             //for each possible AI move, calculate the heuristic with minimax
 
-            heuristicScores.add(minimax(clone, changePlayer(player, clone),maxSearchDepth, true, 0.0,0.0));
+            heuristicScores.add(minimax(clone, changePlayer(player, clone),maxSearchDepth, false, 0.0,0.0));
 
         }
         double bestHeuristic = Double.NEGATIVE_INFINITY;
