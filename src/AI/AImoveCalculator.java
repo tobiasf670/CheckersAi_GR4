@@ -4,6 +4,7 @@ import Interfaces.*;
 import Player.Player;
 import Moves.Move;
 import enums.Side;
+import enums.Side;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,13 +42,13 @@ public class AImoveCalculator implements IAi {
             Board clone = b.clone();
             boardLogic.makeMove(clone,move,player.side,player);
             //for each possible AI move, calculate the heuristic with minimax
-            heuristicScores.add(minimax(clone, player,maxSearchDepth, true, 0.0,0.0));
+
+            heuristicScores.add(minimax(clone, changePlayer(player, clone),maxSearchDepth, true, 0.0,0.0));
+
         }
         double bestHeuristic = Double.NEGATIVE_INFINITY;
-        int indexOfBest = 0;
         for(int i = 0; i<heuristicScores.size(); i++){
             if(heuristicScores.get(i) >= bestHeuristic){
-                indexOfBest = i;
                 bestHeuristic = heuristicScores.get(i);
 
             }
@@ -77,9 +78,8 @@ public class AImoveCalculator implements IAi {
         if(maximizingPlayer){
             v = Double.NEGATIVE_INFINITY;
             for(int i = 0;i< moveICanMake.size();i++) {
-               
-                boards = board.clone();
 
+                boards = board.clone();
                 boardLogic.makeMove(boards,moveICanMake.get(i),player.side,player);
 
                 double res = minimax(boards,changePlayer(player, board),searchDepth -1,!maximizingPlayer,alpha,beta);
@@ -98,6 +98,7 @@ public class AImoveCalculator implements IAi {
             v = Double.POSITIVE_INFINITY;
 
             for(int i = 0;i<moveICanMake.size();i++){
+
                 boards = board.clone();
                 boardLogic.makeMove(boards,moveICanMake.get(i),player.side,player);
                 double res = minimax(boards,changePlayer(player, board),searchDepth-1,!maximizingPlayer,alpha,beta);

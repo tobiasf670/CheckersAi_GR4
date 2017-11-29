@@ -435,7 +435,12 @@ public class CheckersApp extends Application {
 
     public void AIMove() {
     System.out.println("AI TURN************************************************************");
+        long startTime = System.nanoTime();
+
         Move aiMove = ai.bestMove(boardAI, playerAI);
+        long endTime = System.nanoTime();
+        long duration = (endTime - startTime)/1000000;
+        System.out.println("Turn took : "+ duration +" milliseconds");
         System.out.println("ai move" + aiMove);
         int aiX0 = aiMove.getStarty();
         int aiY0 = aiMove.getStartx();
