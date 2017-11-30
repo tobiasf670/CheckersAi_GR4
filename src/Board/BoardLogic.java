@@ -296,9 +296,9 @@ public class BoardLogic implements IBoardLogic {
         } else {
             checkerToRemoveX--;
         }
-
-        b.removeChecker(new Point(checkerToRemoveX, checkerToRemoveY));
         b.updateBoardScore(new Point(checkerToRemoveX, checkerToRemoveY));
+        b.removeChecker(new Point(checkerToRemoveX, checkerToRemoveY));
+
     }
 
     public boolean isKingMove(BoardField field, Move move, Player player) {

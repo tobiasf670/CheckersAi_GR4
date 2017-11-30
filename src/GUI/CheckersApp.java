@@ -46,11 +46,11 @@ public class CheckersApp extends Application {
 
         //Setup game
         bl = new BoardLogic();
-        bl.createPlayer(Side.RED);// black on gui
-        bl.createPlayer(Side.BLACK); // white on gui
+        //bl.createPlayer(Side.RED);// black on gui
+        //bl.createPlayer(Side.BLACK); // white on gui
 
-        Player red = new Player(bl.getPlayers().get(0).side);
-        Player black = new Player(bl.getPlayers().get(1).side);
+        Player red = new Player(Side.RED);
+        Player black = new Player(Side.BLACK);
         boardAI = new Board(red, black);
         boardAI.init();
         MoveValidator vm = new MoveValidator();
@@ -270,7 +270,14 @@ public class CheckersApp extends Application {
                         board[x0][y0].setPiece(null);
                         board[newX][newY].setPiece(piece);
                         human = new Move(new Point(y0, x0), new Point(newY, newX), false);
-                        bl.makeMove(boardAI, human, playerHuman.side, playerHuman);
+                        for(Move move : bl.getAllvalideMoves(this.playerHuman,boardAI)) {
+                            if(move.equals(human)) {
+                                bl.makeMove(boardAI, move, playerHuman.side, playerHuman);
+                                break;
+                            }
+
+                        }
+
                         System.out.println("Human take a turn");
                         AIMove();
                         break;
@@ -279,7 +286,13 @@ public class CheckersApp extends Application {
                         board[x0][y0].setPiece(null);
                         board[newX][newY].setPiece(piece);
                         human = new Move(new Point(y0, x0), new Point(newY, newX), false);
-                        bl.makeMove(boardAI, human, playerHuman.side, playerHuman);
+                        for(Move move : bl.getAllvalideMoves(this.playerHuman,boardAI)) {
+                            if(move.equals(human)) {
+                                bl.makeMove(boardAI, move, playerHuman.side, playerHuman);
+                                break;
+                            }
+
+                        }
                         System.out.println("Human take a turn");
                         AIMove();
                         break;
@@ -288,7 +301,13 @@ public class CheckersApp extends Application {
                         board[x0][y0].setPiece(null);
                         board[newX][newY].setPiece(piece);
                         human = new Move(new Point(y0, x0), new Point(newY, newX), false);
-                        bl.makeMove(boardAI, human, playerHuman.side, playerHuman);
+                        for(Move move : bl.getAllvalideMoves(this.playerHuman,boardAI)) {
+                            if(move.equals(human)) {
+                                bl.makeMove(boardAI, move, playerHuman.side, playerHuman);
+                                break;
+                            }
+
+                        }
                         System.out.println("Human take a turn");
                         AIMove();
                         break;
@@ -322,8 +341,15 @@ public class CheckersApp extends Application {
                         board[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
                         pieceGroup.getChildren().remove(otherPiece);
                         human = new Move(new Point(y0, x0), new Point(newY, newX), false);
-                        bl.makeMove(boardAI, human, playerHuman.side, playerHuman);
-                        boardAI.removeChecker(new Point(toBoard(otherPiece.getOldY()), toBoard(otherPiece.getOldX())));
+                        for(Move move : bl.getAllvalideMoves(this.playerHuman,boardAI)) {
+                            if(move.equals(human)) {
+                                bl.makeMove(boardAI, move, playerHuman.side, playerHuman);
+                                break;
+                            }
+
+                        }
+
+
                         System.out.println("Human take a turn");
                        if( !jumpMore(playerHuman,newX,newY,playerHuman)){
                            AIMove();
@@ -361,7 +387,13 @@ public class CheckersApp extends Application {
                         board[x0][y0].setPiece(null);
                         board[newX][newY].setPiece(piece);
                         human = new Move(new Point(y0, x0), new Point(newY, newX), false);
-                        bl.makeMove(boardAI, human, playerHuman.side, playerHuman);
+                        for(Move move : bl.getAllvalideMoves(this.playerHuman,boardAI)) {
+                            if(move.equals(human)) {
+                                bl.makeMove(boardAI, move, playerHuman.side, playerHuman);
+                                break;
+                            }
+
+                        }
                         System.out.println("Human take a turn");
                         AIMove();
 
@@ -371,7 +403,13 @@ public class CheckersApp extends Application {
                         board[x0][y0].setPiece(null);
                         board[newX][newY].setPiece(piece);
                         human = new Move(new Point(y0, x0), new Point(newY, newX), false);
-                        bl.makeMove(boardAI, human, playerHuman.side, playerHuman);
+                        for(Move move : bl.getAllvalideMoves(this.playerHuman,boardAI)) {
+                            if(move.equals(human)) {
+                                bl.makeMove(boardAI, move, playerHuman.side, playerHuman);
+                                break;
+                            }
+
+                        }
                         System.out.println("Human take a turn");
                         AIMove();
                         break;
@@ -380,7 +418,13 @@ public class CheckersApp extends Application {
                         board[x0][y0].setPiece(null);
                         board[newX][newY].setPiece(piece);
                         human = new Move(new Point(y0, x0), new Point(newY, newX), false);
-                        bl.makeMove(boardAI, human, playerHuman.side, playerHuman);
+                        for(Move move : bl.getAllvalideMoves(this.playerHuman,boardAI)) {
+                            if(move.equals(human)) {
+                                bl.makeMove(boardAI, move, playerHuman.side, playerHuman);
+                                break;
+                            }
+
+                        }
                         System.out.println("Human take a turn");
                         AIMove();
                         break;
@@ -412,8 +456,13 @@ public class CheckersApp extends Application {
                         board[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
                         pieceGroup.getChildren().remove(otherPiece);
                         human = new Move(new Point(y0, x0), new Point(newY, newX), false);
-                        bl.makeMove(boardAI, human, playerHuman.side, playerHuman);
-                        boardAI.removeChecker(new Point(toBoard(otherPiece.getOldY()), toBoard(otherPiece.getOldX())));
+                        for(Move move : bl.getAllvalideMoves(this.playerHuman,boardAI)) {
+                            if(move.equals(human)) {
+                                bl.makeMove(boardAI, move, playerHuman.side, playerHuman);
+                                break;
+                            }
+
+                        }
                         System.out.println("Human take a turn");
 
 
