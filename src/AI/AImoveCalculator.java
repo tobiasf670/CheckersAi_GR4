@@ -21,7 +21,7 @@ public class AImoveCalculator implements IAi {
     IHeuristicCalculator heuristicCalculator;
     IBoardLogic boardLogic;
 
-    private static final int maxSearchDepth = 12;
+    private static final int maxSearchDepth = 10;
 
     //Constructor.
     public AImoveCalculator(IMoveValidator moveValidator, IHeuristicCalculator heuristicCalculator,
@@ -43,7 +43,7 @@ public class AImoveCalculator implements IAi {
             //for each possible AI move, calculate the heuristic with minimax
 
             heuristicScores.add(minimax(clone, changePlayer(player, clone),
-                    maxSearchDepth-1, false, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY));
+                    maxSearchDepth-1, false, 0.0, 0.0));
 
         }
         double bestHeuristic = Double.NEGATIVE_INFINITY;
