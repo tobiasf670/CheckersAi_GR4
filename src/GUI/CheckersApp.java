@@ -516,7 +516,7 @@ public class CheckersApp extends Application {
             board[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
             pieceGroup.getChildren().remove(otherPiece);
             bl.makeMove(boardAI, aiMove, playerAI.side, playerAI);
-            if( jumpMore(playerAI, aiNewX,aiNewY,playerAI)){
+            if(jumpMore(playerAI, aiNewX,aiNewY,playerAI)){
                 AIMove();
             }
 

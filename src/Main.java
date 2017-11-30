@@ -23,7 +23,7 @@ public class Main
 
     public static void main(String[] args) {
         CheckersApp GUI = new CheckersApp();
-        GUI.launch(CheckersApp.class,args);
+        GUI.launch(CheckersApp.class, args);
 
         //GameController gameController = new GameController();
         //gameController.gameLoop();

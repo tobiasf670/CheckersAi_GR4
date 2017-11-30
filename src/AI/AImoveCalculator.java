@@ -54,6 +54,7 @@ public class AImoveCalculator implements IAi {
             }
         }
 
+        //The move we end up making for the AI
         Move toReturn = returnRandomMove(allValidMoves, heuristicScores, bestHeuristic);
 
         //return allValidMoves.get(heuristicScores.indexOf(bestHeuristic));
@@ -73,7 +74,6 @@ public class AImoveCalculator implements IAi {
         }
 
         Board boards = null;
-
 
            List<Move> moveICanMake = boardLogic.getAllvalideMoves(player,board) ;
 
@@ -120,6 +120,7 @@ public class AImoveCalculator implements IAi {
         return v;
     }
 
+    //Takes all the moves + scores + the best heuristic and this method is the on we end up calling for the final move.
     private Move returnRandomMove(List<Move> moves, List<Double> scores, double bestHeuristic) {
 
         for(int i = 0; i < scores.size(); i++)
