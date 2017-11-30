@@ -23,12 +23,12 @@ public class HeuristicCalculator implements IHeuristicCalculator{
 
         double valueForRed = board.numberOfRedCheckers+(board.numberOfRedKings*kingFactor);
         double valueForBlack = board.numberOfBlackCheckers + (board.numberOfBlackKings*kingFactor);
-
+        double jumpMovefactor = jumpMoveFactor(board, changePlayer(player,board));
         if(player.side == Side.BLACK) {
-            double result = valueForBlack-valueForRed;
+            double result = valueForBlack-valueForRed - jumpMovefactor;
             return(result);
         }
-        double result = valueForRed-valueForBlack;
+        double result = valueForRed-valueForBlack - jumpMovefactor;
         return(result);
     }
 
@@ -36,5 +36,9 @@ public class HeuristicCalculator implements IHeuristicCalculator{
         int jumpMoves = logic.getJumpMoves(board,player).size();
         return 0.2 * jumpMoves;
 
+    }
+
+    public Player changePlayer(Player player, Board board){
+        return board.getOpponent(player);
     }
 }

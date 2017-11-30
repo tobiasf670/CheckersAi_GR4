@@ -42,7 +42,7 @@ public class AImoveCalculator implements IAi {
             boardLogic.makeMove(clone,move,player.side,player);
             //for each possible AI move, calculate the heuristic with minimax
 
-            heuristicScores.add(minimax(clone, changePlayer(player, clone),maxSearchDepth, false, 0.0,0.0));
+            heuristicScores.add(minimax(clone, changePlayer(player, clone),maxSearchDepth-1, false, 0.0,0.0));
 
         }
         double bestHeuristic = Double.NEGATIVE_INFINITY;
@@ -59,22 +59,7 @@ public class AImoveCalculator implements IAi {
         return toReturn;
     }
 
-    private Move returnRandomMove(List<Move> moves, List<Double> scores, double bestHeuristic) {
 
-        for(int i = 0; i < scores.size(); i++)
-        {
-            if(scores.get(i) < bestHeuristic)
-            {
-                scores.remove(i);
-                moves.remove(i);
-                i--;
-            }
-        }
-        int randomNum = ThreadLocalRandom.current().nextInt(0, moves.size());
-
-
-        return moves.get(randomNum);
-    }
 
     //MinMax with alpha beta phruning algorithm created.
     public double minimax(Board board, Player player, int searchDepth,
@@ -132,6 +117,23 @@ public class AImoveCalculator implements IAi {
         }
 
         return v;
+    }
+
+    private Move returnRandomMove(List<Move> moves, List<Double> scores, double bestHeuristic) {
+
+        for(int i = 0; i < scores.size(); i++)
+        {
+            if(scores.get(i) < bestHeuristic)
+            {
+                scores.remove(i);
+                moves.remove(i);
+                i--;
+            }
+        }
+        int randomNum = ThreadLocalRandom.current().nextInt(0, moves.size());
+
+
+        return moves.get(randomNum);
     }
 
     //Swiches back to player after AI have made a move.
