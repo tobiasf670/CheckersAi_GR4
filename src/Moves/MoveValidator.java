@@ -13,6 +13,7 @@ public class MoveValidator implements IMoveValidator {
     @Override
     public boolean isValidMove(Player player, BoardField boardField, Move move, boolean isJumpMove) {
 
+
         //if moving beyond the border of the board
         if(move.getGoaly() > 7 || move.getGoaly()< 0 || move.getGoalx() >7 || move.getGoalx() < 0) {
             return false;
