@@ -483,12 +483,14 @@ public class CheckersApp extends Application {
     }
 
     public void AIMove() {
-    System.out.println("AI TURN************************************************************");
+
+        System.out.println("AI TURN************************************************************");
         long startTime = System.nanoTime();
 
         Move aiMove = ai.bestMove(boardAI, playerAI);
         long endTime = System.nanoTime();
         long duration = (endTime - startTime)/1000000;
+
         System.out.println("Turn took : "+ duration +" milliseconds");
         System.out.println("ai move" + aiMove);
         int aiX0 = aiMove.getStarty();
@@ -496,8 +498,7 @@ public class CheckersApp extends Application {
         int aiNewX = aiMove.getGoaly();
         int aiNewY = aiMove.getGoalx();
         Piece pice = board[aiX0][aiY0].getPiece();
-        //      System.out.println(aiX0+" og " + aiY0);
-//        System.out.println(board[aiX0][aiY0].getPiece().getType());
+
         MoveResult moveRes = tryMove(board[aiX0][aiY0].getPiece(), aiNewX, aiNewY,playerAI);
         if (moveRes.getType() == MoveType.NORMAL || moveRes.getType() == MoveType.KING_BLACK || moveRes.getType() == MoveType.KING_WHITE) {
             pice.move(aiNewX, aiNewY);

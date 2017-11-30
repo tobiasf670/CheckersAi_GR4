@@ -21,7 +21,7 @@ public class AImoveCalculator implements IAi {
     IHeuristicCalculator heuristicCalculator;
     IBoardLogic boardLogic;
 
-    private static final int maxSearchDepth = 8;
+    private static final int maxSearchDepth = 12;
 
     //Constructor.
     public AImoveCalculator(IMoveValidator moveValidator, IHeuristicCalculator heuristicCalculator,
