@@ -8,8 +8,14 @@ import enums.Side;
 /**
  * Created by malthe on 11/17/17.
  */
-
+import Board.BoardLogic;
 public class HeuristicCalculator implements IHeuristicCalculator{
+
+    BoardLogic logic;
+
+    public HeuristicCalculator() {
+        this.logic = new BoardLogic();
+    }
 
     private final double kingFactor = 1.2;
     @Override
@@ -24,5 +30,11 @@ public class HeuristicCalculator implements IHeuristicCalculator{
         }
         double result = valueForRed-valueForBlack;
         return(result);
+    }
+
+    private double jumpMoveFactor(Board board, Player player) {
+        int jumpMoves = logic.getJumpMoves(board,player).size();
+        return 0.2 * jumpMoves;
+
     }
 }

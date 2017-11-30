@@ -180,4 +180,20 @@ public class testBoardLogic {
 
         int x = 10;
     }
+
+    @Test
+    public void testValidMovesWhenJump() {
+
+        BoardField field = board.getBoardField(new Point(1,6));
+        field.owner = red;
+        field.checkerType = CheckerType.RED;
+        BoardField field1 = board.getBoardField(new Point(2,7));
+        //field1.owner = null;
+        field1.checkerType = CheckerType.EMPTY;
+        field1.isOccupied = false;
+        board.print();
+        List<Move> moves = this.boardLogic.getAllvalideMoves(black,board);
+
+        int x = 10;
+    }
 }
