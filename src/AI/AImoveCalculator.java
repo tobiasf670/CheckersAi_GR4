@@ -6,9 +6,8 @@ import Moves.Move;
 import enums.Side;
 import enums.Side;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static java.util.Collections.max;
 
@@ -54,7 +53,27 @@ public class AImoveCalculator implements IAi {
             }
         }
 
-        return allValidMoves.get(heuristicScores.indexOf(bestHeuristic));
+        Move toReturn = returnRandomMove(allValidMoves, heuristicScores, bestHeuristic);
+
+        //return allValidMoves.get(heuristicScores.indexOf(bestHeuristic));
+        return toReturn;
+    }
+
+    private Move returnRandomMove(List<Move> moves, List<Double> scores, double bestHeuristic) {
+
+        for(int i = 0; i < scores.size(); i++)
+        {
+            if(scores.get(i) < bestHeuristic)
+            {
+                scores.remove(i);
+                moves.remove(i);
+                i--;
+            }
+        }
+        int randomNum = ThreadLocalRandom.current().nextInt(0, moves.size());
+
+
+        return moves.get(randomNum);
     }
 
     //MinMax with alpha beta phruning algorithm created.
