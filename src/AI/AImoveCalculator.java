@@ -111,7 +111,7 @@ public class AImoveCalculator implements IAi {
                         !isMaximizingPlayer,alpha,beta);
 
                 v = Math.min(res,v);
-                alpha = Math.min(alpha,v);
+                beta = Math.min(alpha,v);
                 //prune
                 if(alpha>=beta){
                     break;
