@@ -21,7 +21,7 @@ public class AImoveCalculator implements IAi {
     IHeuristicCalculator heuristicCalculator;
     IBoardLogic boardLogic;
 
-    private static final int maxSearchDepth = 10;
+    private static final int maxSearchDepth = 8;
 
     //Constructor.
     public AImoveCalculator(IMoveValidator moveValidator, IHeuristicCalculator heuristicCalculator,
@@ -43,7 +43,7 @@ public class AImoveCalculator implements IAi {
             //for each possible AI move, calculate the heuristic with minimax
 
             heuristicScores.add(minimax(clone, changePlayer(player, clone),
-                    maxSearchDepth-1, false, 0.0, 0.0));
+                    1, false, 0.0, 0.0));
 
         }
         double bestHeuristic = Double.NEGATIVE_INFINITY;
@@ -65,33 +65,31 @@ public class AImoveCalculator implements IAi {
 
     //MinMax with alpha beta phruning algorithm created.
     public double minimax(Board board, Player player, int searchDepth,
-                           boolean maximizingPlayer, double alpha, double beta) {
+                           boolean isMaximizingPlayer, double alpha, double beta) {
 
         //Base case : Recursion ends here
-        if(searchDepth == 0) {
+        if(searchDepth == maxSearchDepth) {
             //return the heuristic score
             return heuristicCalculator.CalculateHeuristic(board, player);
         }
 
-        Board boards = null;
-
-           List<Move> moveICanMake = boardLogic.getAllvalideMoves(player,board) ;
-
-
         double v = 0;
 
-        if(maximizingPlayer){
+        if(isMaximizingPlayer){
             v = Double.NEGATIVE_INFINITY;
-            for(int i = 0;i< moveICanMake.size();i++) {
+            for(Move move : boardLogic.getAllvalideMoves(player,board)) {
 
-                boards = board.clone();
-                boardLogic.makeMove(boards,moveICanMake.get(i),player.side,player);
-
-                double res = minimax(boards,changePlayer(player, board),searchDepth -1,!maximizingPlayer,alpha,beta);
+                Board cloneBoard = board.clone();
+                boardLogic.makeMove(cloneBoard,move,player.side,player);
+                if(move.isJumpMove) {
+                    keepMovingIfPossible(cloneBoard,player,move);
+                }
+                double res = minimax(cloneBoard,changePlayer(player, board),searchDepth +1,
+                        !isMaximizingPlayer,alpha,beta);
 
                 v = Math.max(res,v);
                 alpha = Math.max(alpha,v);
-
+                //prune
                 if(alpha >= beta){
                    break;
                 }
@@ -102,15 +100,19 @@ public class AImoveCalculator implements IAi {
         {
             v = Double.POSITIVE_INFINITY;
 
-            for(int i = 0;i<moveICanMake.size();i++){
+            for(Move move : boardLogic.getAllvalideMoves(player,board)){
 
-                boards = board.clone();
-                boardLogic.makeMove(boards,moveICanMake.get(i),player.side,player);
-                double res = minimax(boards,changePlayer(player, board),searchDepth-1,!maximizingPlayer,alpha,beta);
+                Board cloneBoard = board.clone();
+                boardLogic.makeMove(cloneBoard,move,player.side,player);
+                if(move.isJumpMove) {
+                    keepMovingIfPossible(cloneBoard,player,move);
+                }
+                double res = minimax(cloneBoard,changePlayer(player, board),searchDepth+1,
+                        !isMaximizingPlayer,alpha,beta);
 
                 v = Math.min(res,v);
                 alpha = Math.min(alpha,v);
-
+                //prune
                 if(alpha>=beta){
                     break;
                 }
@@ -136,6 +138,24 @@ public class AImoveCalculator implements IAi {
 
 
         return moves.get(randomNum);
+    }
+
+    private void keepMovingIfPossible(Board board, Player player, Move move) {
+
+        List<Move> movesFromHere = boardLogic.getJumpMoves(board, player);
+
+        for(Move move1 : movesFromHere) {
+            if(move1.isJumpMove) {
+                if(move.getGoaly() == move1.getStarty() && move.getGoalx() == move1.getStartx()) {
+                    boardLogic.makeMove(board,move1,player.side,player);
+                    keepMovingIfPossible(board, player, move1);
+                }
+            } else {
+                break;
+            }
+
+        }
+
     }
 
     //Swiches back to player after AI have made a move.
