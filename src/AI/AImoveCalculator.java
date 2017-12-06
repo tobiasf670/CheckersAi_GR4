@@ -43,7 +43,7 @@ public class AImoveCalculator implements IAi {
             //for each possible AI move, calculate the heuristic with minimax
 
             heuristicScores.add(minimax(clone, changePlayer(player, clone),
-                    1, false, 0.0, 0.0));
+                    1, false, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY));
 
         }
         double bestHeuristic = Double.NEGATIVE_INFINITY;
