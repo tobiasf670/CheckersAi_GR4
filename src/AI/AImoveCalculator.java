@@ -40,7 +40,7 @@ public class AImoveCalculator implements IAi {
         for(Move move : allValidMoves) {
             Board clone = b.clone();
             boardLogic.makeMove(clone,move,player.side,player);
-            //for each possible AI move, calculate the heuristic with minimax
+            //for each possible AI move (board state), calculate the heuristic with minimax
 
             heuristicScores.add(minimax(clone, changePlayer(player, clone),
                     1, false, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY));
@@ -81,7 +81,9 @@ public class AImoveCalculator implements IAi {
 
                 Board cloneBoard = board.clone();
                 boardLogic.makeMove(cloneBoard,move,player.side,player);
+                //If the isumpMove
                 if(move.isJumpMove) {
+                    //we might as well keep the piece moving if has additional free moves
                     keepMovingIfPossible(cloneBoard,player,move);
                 }
                 double res = minimax(cloneBoard,changePlayer(player, board),searchDepth +1,
